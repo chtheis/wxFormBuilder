@@ -58,8 +58,10 @@ public:
 		ObjectToXrcFilter xrc(obj, _("sizeritem"));
 		xrc.AddPropertyPair( _("row"), _("column"), _("cellpos") );
 		xrc.AddPropertyPair( _("rowspan"), _("colspan"), _("cellspan") );
+		xrc.AddProperty(_("proportion"), _("option"), XRC_TYPE_INTEGER);
 		xrc.AddProperty(_("flag"),   _("flag"),   XRC_TYPE_BITLIST);
 		xrc.AddProperty(_("border"), _("border"), XRC_TYPE_INTEGER);
+		xrc.AddProperty(_("minsize"), _("minsize"), XRC_TYPE_SIZE);
 		return xrc.GetXrcObject();
 	}
 
@@ -69,8 +71,10 @@ public:
 		XrcToXfbFilter filter(xrcObj, _("gbsizeritem"));
 		filter.AddPropertyPair( "cellpos", _("row"), _("column") );
 		filter.AddPropertyPair( "cellspan", _("rowspan"), _("colspan") );
+		filter.AddProperty(_("option"), _("proportion"), XRC_TYPE_INTEGER);
 		filter.AddProperty(_("flag"),   _("flag"),   XRC_TYPE_BITLIST);
 		filter.AddProperty(_("border"), _("border"), XRC_TYPE_INTEGER);
+		filter.AddProperty(_("minsize"), _("minsize"), XRC_TYPE_SIZE);
 		ticpp::Element* sizeritem = filter.GetXfbObject();
 
 		// XrcLoader::GetObject imports spacers as sizeritems, so check for a spacer
@@ -155,6 +159,7 @@ public:
 		xrc.AddProperty(_("proportion"), _("option"), XRC_TYPE_INTEGER);
 		xrc.AddProperty(_("flag"),   _("flag"),   XRC_TYPE_BITLIST);
 		xrc.AddProperty(_("border"), _("border"), XRC_TYPE_INTEGER);
+		xrc.AddProperty(_("minsize"), _("minsize"), XRC_TYPE_SIZE);
 		return xrc.GetXrcObject();
 	}
 
@@ -164,6 +169,7 @@ public:
 		filter.AddProperty(_("option"), _("proportion"), XRC_TYPE_INTEGER);
 		filter.AddProperty(_("flag"),   _("flag"),   XRC_TYPE_BITLIST);
 		filter.AddProperty(_("border"), _("border"), XRC_TYPE_INTEGER);
+		filter.AddProperty(_("minsize"), _("minsize"), XRC_TYPE_SIZE);
 		ticpp::Element* sizeritem = filter.GetXfbObject();
 
 		// XrcLoader::GetObject imports spacers as sizeritems, so check for a spacer

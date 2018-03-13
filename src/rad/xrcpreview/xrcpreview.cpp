@@ -175,7 +175,27 @@ void XRCPreview::Show( PObjectBase form, const wxString& projectPath )
 	res->Load( wxT("memory:xrcpreview.xrc") );
 
 	wxWindow* window = NULL;
-	if ( className == wxT( "Frame" ) )
+	wxString derivedClassName = form->GetPropertyAsString( wxT( "class" ) );
+	
+	if ( derivedClassName.Contains( wxT(";") ) )
+	  derivedClassName = derivedClassName.SubString( 0, derivedClassName.Index( wxT( ';' ) ) - 1 );
+	
+	if ( !derivedClassName.IsEmpty() )
+ 	{
+	  wxObject *obj = res->LoadObject( wxTheApp->GetTopWindow(), form->GetPropertyAsString( wxT( "name" ) ), derivedClassName );
+	  if ( obj != NULL && (window = wxDynamicCast(obj, wxWindow)) == NULL )
+	  {
+	    delete obj;
+	    obj = NULL;
+	  }
+	  
+	  if ( window != NULL )
+	  {
+	    window->SetExtraStyle( window->GetExtraStyle() | wxWS_EX_BLOCK_EVENTS );
+	    window->Show();
+	  }
+	}		
+	else if ( className == wxT( "Frame" ) )
 	{
 		wxFrame* frame = new wxFrame();
 		res->LoadFrame( frame, wxTheApp->GetTopWindow(), form->GetPropertyAsString( wxT( "name" ) ) );

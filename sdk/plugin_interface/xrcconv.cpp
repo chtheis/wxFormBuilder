@@ -431,6 +431,15 @@ void ObjectToXrcFilter::AddWindowProperties()
 	if ( !m_obj->IsNull( _( "tooltip" ) ) )
 		AddProperty( _( "tooltip" ), wxT( "tooltip" ), XRC_TYPE_TEXT );
 
+	if ( !m_obj->IsNull( _( "class" ) ) )
+	{
+		wxString subclass = m_obj->GetChildFromParentProperty( _( "class" ), wxT( "name" ) );
+		if ( !subclass.empty() )
+		{
+			m_xrcObj->SetAttribute( "class", subclass.mb_str( wxConvUTF8 ) );
+		}
+	}
+
 	if ( !m_obj->IsNull( _( "subclass" ) ) )
 	{
 		wxString subclass = m_obj->GetChildFromParentProperty( _( "subclass" ), wxT( "name" ) );
@@ -1009,6 +1018,17 @@ void XrcToXfbFilter::AddWindowProperties()
 	AddProperty( _( "tooltip"), _("tooltip"), XRC_TYPE_TEXT );
 	AddStyleProperty();
 	AddExtraStyleProperty();
+
+	// Class
+	std::string clazz;
+	m_xrcObj->GetAttribute( "class", &clazz, false );
+	if ( !clazz.empty() )
+	{
+		ticpp::Element propElement( "property" );
+		propElement.SetAttribute( "name", "class" );
+		propElement.SetText( clazz );
+		m_xfbObj->LinkEndChild( &propElement );
+	}
 
 	// Subclass
 	std::string subclass;

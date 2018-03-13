@@ -58,10 +58,11 @@ Written by
 			  help="How much this control will stretch in proportion to the other controls in the same sizer. Set to 0 to prevent stretching.">
 			  0
 	</property>
+  <property name="minsize" type="wxSize" help="Give the sizer a minimal size." />
   </objectinfo>
 
   <objectinfo class="gbsizeritem" smallIcon="sizer.xpm" type="gbsizeritem">
-    <inherits class="sizeritembase"/>
+    <inherits class="sizeritem"/>
     <property name="row" type="uint" help="Row for the item.">0</property>
     <property name="column" type="int" help="Column for the item.">-1</property>
     <property name="rowspan" type="uint" help="The number of rows that the item spans.">1</property>

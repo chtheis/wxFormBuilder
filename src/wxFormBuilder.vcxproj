@@ -1,0 +1,360 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{2134A842-F3D8-A84E-A756-BF30F98BE972}</ProjectGuid>
+    <RootNamespace>wxFormBuilder</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../output\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.objsu\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../output\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.objsud\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectName)d</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>controls/include;boost;../src;../sdk/ticpp;../sdk/plugin_interface;$(WXWIN)/include;$(WXWIN)/lib/vc_dll/mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WXUSINGDLL_FNB;TIXML_USE_TICPP;NO_GCC_PRAGMA;SCI_NAMESPACE;WXUSINGDLL;_CRT_SECURE_NO_WARNINGS;UNICODE;_UNICODE;__WX__;__WXMSW__;WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <PrecompiledHeaderFile>StdAfx.h</PrecompiledHeaderFile>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WXUSINGDLL_FNB;TIXML_USE_TICPP;NO_GCC_PRAGMA;SCI_NAMESPACE;USE_FLATNOTEBOOK;WXUSINGDLL;UNICODE;_UNICODE;__WX__;__WXMSW__;WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>controls/include;boost;../src;../sdk/tinyxml;../sdk/plugin_interface;$(WXWIN)/include;$(WXWIN)/lib/vc_dll/mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>../sdk/lib/ticpp.lib;../sdk/lib/wxfb-plugin-interface.lib;wxbase31u.lib;wxmsw31u_core.lib;wxmsw31u_adv.lib;wxmsw31u_aui.lib;wxmsw31u_html.lib;wxmsw31u_stc.lib;wxmsw31u_propgrid.lib;wxmsw31u_xrc.lib;imagehlp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)wxFormBuilder.exe</OutputFile>
+      <AdditionalLibraryDirectories>..;../output;../sdk/lib;$(WXWIN)/lib/vc_dll;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <EntryPointSymbol>
+      </EntryPointSymbol>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>controls/include;boost;../src;../sdk/ticpp;../sdk/plugin_interface;$(WXWIN)/include;$(WXWIN)/lib/vc_dll/mswud;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WXUSINGDLL_FNB;TIXML_USE_TICPP;NO_GCC_PRAGMA;SCI_NAMESPACE;WXUSINGDLL;_CRT_SECURE_NO_WARNINGS;UNICODE;_UNICODE;__WX__;__WXMSW__;WIN32;_WINDOWS;DEBUG;_DEBUG;__WXDEBUG__;__WXFB_DEBUG__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <PrecompiledHeaderFile>StdAfx.h</PrecompiledHeaderFile>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WXUSINGDLL_FNB;TIXML_USE_TICPP;NO_GCC_PRAGMA;SCI_NAMESPACE;USE_FLATNOTEBOOK;WXUSINGDLL;UNICODE;_UNICODE;__WX__;__WXMSW__;WIN32;_WINDOWS;DEBUG;_DEBUG;__WXDEBUG__;__WXFB_DEBUG__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>controls/include;boost;../src;../sdk/tinyxml;../sdk/plugin_interface;$(WXWIN)/include;$(WXWIN)/lib/vc_dll/mswud;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>../sdk/lib/ticppd.lib;../sdk/lib/wxfb-plugin-interfaced.lib;wxbase31ud.lib;wxmsw31ud_core.lib;wxmsw31ud_adv.lib;wxmsw31ud_aui.lib;wxmsw31ud_html.lib;wxmsw31ud_stc.lib;wxmsw31ud_propgrid.lib;wxmsw31ud_xrc.lib;imagehlp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)wxFormBuilderd.exe</OutputFile>
+      <AdditionalLibraryDirectories>..;../output;../sdk/lib;$(WXWIN)/lib/vc_dll;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(OutDir)wxFormBuilderd.pdb</ProgramDatabaseFile>
+      <SubSystem>Windows</SubSystem>
+      <EntryPointSymbol>
+      </EntryPointSymbol>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="codegen\codegen.cpp" />
+    <ClCompile Include="codegen\codeparser.cpp" />
+    <ClCompile Include="codegen\codewriter.cpp" />
+    <ClCompile Include="codegen\cppcg.cpp" />
+    <ClCompile Include="codegen\luacg.cpp" />
+    <ClCompile Include="codegen\phpcg.cpp" />
+    <ClCompile Include="codegen\pythoncg.cpp" />
+    <ClCompile Include="codegen\xrccg.cpp" />
+    <ClCompile Include="model\database.cpp" />
+    <ClCompile Include="model\objectbase.cpp" />
+    <ClCompile Include="model\types.cpp" />
+    <ClCompile Include="model\xrcfilter.cpp" />
+    <ClCompile Include="rad\codeeditor\codeeditor.cpp" />
+    <ClCompile Include="rad\cpppanel\cpppanel.cpp" />
+    <ClCompile Include="rad\dataobject\dataobject.cpp" />
+    <ClCompile Include="rad\designer\innerframe.cpp" />
+    <ClCompile Include="rad\designer\menubar.cpp" />
+    <ClCompile Include="rad\designer\resizablepanel.cpp" />
+    <ClCompile Include="rad\designer\visualeditor.cpp" />
+    <ClCompile Include="rad\designer\visualobj.cpp" />
+    <ClCompile Include="rad\geninheritclass\geninhertclass.cpp" />
+    <ClCompile Include="rad\geninheritclass\geninhertclass_gui.cpp" />
+    <ClCompile Include="rad\inspector\objinspect.cpp" />
+    <ClCompile Include="rad\inspector\wxfbadvprops.cpp" />
+    <ClCompile Include="rad\luapanel\luapanel.cpp" />
+    <ClCompile Include="rad\objecttree\objecttree.cpp" />
+    <ClCompile Include="rad\phppanel\phppanel.cpp" />
+    <ClCompile Include="rad\pythonpanel\pythonpanel.cpp" />
+    <ClCompile Include="rad\xrcpanel\xrcpanel.cpp" />
+    <ClCompile Include="rad\xrcpreview\xrcpreview.cpp" />
+    <ClCompile Include="rad\about.cpp" />
+    <ClCompile Include="rad\appdata.cpp" />
+    <ClCompile Include="rad\bitmaps.cpp" />
+    <ClCompile Include="rad\cmdproc.cpp" />
+    <ClCompile Include="rad\customkeys.cpp" />
+    <ClCompile Include="rad\genericpanel.cpp" />
+    <ClCompile Include="rad\mainframe.cpp" />
+    <ClCompile Include="rad\menueditor.cpp" />
+    <ClCompile Include="rad\palette.cpp" />
+    <ClCompile Include="rad\title.cpp" />
+    <ClCompile Include="rad\wxfbevent.cpp" />
+    <ClCompile Include="rad\wxfbmanager.cpp" />
+    <ClCompile Include="utils\annoyingdialog.cpp" />
+    <ClCompile Include="utils\encodingutils.cpp" />
+    <ClCompile Include="utils\filetocarray.cpp" />
+    <ClCompile Include="utils\stringutils.cpp" />
+    <ClCompile Include="utils\typeconv.cpp" />
+    <ClCompile Include="utils\wxfbipc.cpp" />
+    <ClCompile Include="md5\md5.cc" />
+    <ClCompile Include="maingui.cpp" />
+    <ClCompile Include="splashscreen.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="codegen\codegen.h" />
+    <ClInclude Include="codegen\codeparser.h" />
+    <ClInclude Include="codegen\codewriter.h" />
+    <ClInclude Include="codegen\cppcg.h" />
+    <ClInclude Include="codegen\luacg.h" />
+    <ClInclude Include="codegen\phpcg.h" />
+    <ClInclude Include="codegen\pythoncg.h" />
+    <ClInclude Include="codegen\xrccg.h" />
+    <ClInclude Include="model\database.h" />
+    <ClInclude Include="model\objectbase.h" />
+    <ClInclude Include="model\types.h" />
+    <ClInclude Include="model\xrcfilter.h" />
+    <ClInclude Include="rad\codeeditor\codeeditor.h" />
+    <ClInclude Include="rad\cpppanel\cpppanel.h" />
+    <ClInclude Include="rad\dataobject\dataobject.h" />
+    <ClInclude Include="rad\designer\innerframe.h" />
+    <ClInclude Include="rad\designer\menubar.h" />
+    <ClInclude Include="rad\designer\resizablepanel.h" />
+    <ClInclude Include="rad\designer\visualeditor.h" />
+    <ClInclude Include="rad\designer\visualobj.h" />
+    <ClInclude Include="rad\designer\window_buttons.h" />
+    <ClInclude Include="rad\geninheritclass\geninhertclass.h" />
+    <ClInclude Include="rad\geninheritclass\geninhertclass_gui.h" />
+    <ClInclude Include="rad\inspector\objinspect.h" />
+    <ClInclude Include="rad\inspector\wxfbadvprops.h" />
+    <ClInclude Include="rad\luapanel\luapanel.h" />
+    <ClInclude Include="rad\objecttree\objecttree.h" />
+    <ClInclude Include="rad\phppanel\phppanel.h" />
+    <ClInclude Include="rad\pythonpanel\pythonpanel.h" />
+    <ClInclude Include="rad\xrcpanel\xrcpanel.h" />
+    <ClInclude Include="rad\xrcpreview\xrcpreview.h" />
+    <ClInclude Include="rad\about.h" />
+    <ClInclude Include="rad\appdata.h" />
+    <ClInclude Include="rad\auitabart.h" />
+    <ClInclude Include="rad\bitmaps.h" />
+    <ClInclude Include="rad\cmdproc.h" />
+    <ClInclude Include="rad\customkeys.h" />
+    <ClInclude Include="rad\genericpanel.h" />
+    <ClInclude Include="rad\mainframe.h" />
+    <ClInclude Include="rad\menueditor.h" />
+    <ClInclude Include="rad\palette.h" />
+    <ClInclude Include="rad\title.h" />
+    <ClInclude Include="rad\wxfbevent.h" />
+    <ClInclude Include="rad\wxfbmanager.h" />
+    <ClInclude Include="utils\annoyingdialog.h" />
+    <ClInclude Include="utils\debug.h" />
+    <ClInclude Include="utils\encodingutils.h" />
+    <ClInclude Include="utils\filetocarray.h" />
+    <ClInclude Include="utils\stringutils.h" />
+    <ClInclude Include="utils\typeconv.h" />
+    <ClInclude Include="utils\wxfbdefs.h" />
+    <ClInclude Include="utils\wxfbexception.h" />
+    <ClInclude Include="utils\wxfbipc.h" />
+    <ClInclude Include="utils\wxlogstring.h" />
+    <ClInclude Include="boost\config\abi\borland_prefix.hpp" />
+    <ClInclude Include="boost\config\abi\borland_suffix.hpp" />
+    <ClInclude Include="boost\config\abi\msvc_prefix.hpp" />
+    <ClInclude Include="boost\config\abi\msvc_suffix.hpp" />
+    <ClInclude Include="boost\config\compiler\borland.hpp" />
+    <ClInclude Include="boost\config\compiler\comeau.hpp" />
+    <ClInclude Include="boost\config\compiler\common_edg.hpp" />
+    <ClInclude Include="boost\config\compiler\compaq_cxx.hpp" />
+    <ClInclude Include="boost\config\compiler\digitalmars.hpp" />
+    <ClInclude Include="boost\config\compiler\gcc.hpp" />
+    <ClInclude Include="boost\config\compiler\greenhills.hpp" />
+    <ClInclude Include="boost\config\compiler\hp_acc.hpp" />
+    <ClInclude Include="boost\config\compiler\intel.hpp" />
+    <ClInclude Include="boost\config\compiler\kai.hpp" />
+    <ClInclude Include="boost\config\compiler\metrowerks.hpp" />
+    <ClInclude Include="boost\config\compiler\mpw.hpp" />
+    <ClInclude Include="boost\config\compiler\sgi_mipspro.hpp" />
+    <ClInclude Include="boost\config\compiler\sunpro_cc.hpp" />
+    <ClInclude Include="boost\config\compiler\vacpp.hpp" />
+    <ClInclude Include="boost\config\compiler\visualc.hpp" />
+    <ClInclude Include="boost\config\platform\aix.hpp" />
+    <ClInclude Include="boost\config\platform\amigaos.hpp" />
+    <ClInclude Include="boost\config\platform\beos.hpp" />
+    <ClInclude Include="boost\config\platform\bsd.hpp" />
+    <ClInclude Include="boost\config\platform\cygwin.hpp" />
+    <ClInclude Include="boost\config\platform\hpux.hpp" />
+    <ClInclude Include="boost\config\platform\irix.hpp" />
+    <ClInclude Include="boost\config\platform\linux.hpp" />
+    <ClInclude Include="boost\config\platform\macos.hpp" />
+    <ClInclude Include="boost\config\platform\solaris.hpp" />
+    <ClInclude Include="boost\config\platform\win32.hpp" />
+    <ClInclude Include="boost\config\stdlib\dinkumware.hpp" />
+    <ClInclude Include="boost\config\stdlib\libcomo.hpp" />
+    <ClInclude Include="boost\config\stdlib\libstdcpp3.hpp" />
+    <ClInclude Include="boost\config\stdlib\modena.hpp" />
+    <ClInclude Include="boost\config\stdlib\msl.hpp" />
+    <ClInclude Include="boost\config\stdlib\roguewave.hpp" />
+    <ClInclude Include="boost\config\stdlib\sgi.hpp" />
+    <ClInclude Include="boost\config\stdlib\stlport.hpp" />
+    <ClInclude Include="boost\config\stdlib\vacpp.hpp" />
+    <ClInclude Include="boost\config\abi_prefix.hpp" />
+    <ClInclude Include="boost\config\abi_suffix.hpp" />
+    <ClInclude Include="boost\config\auto_link.hpp" />
+    <ClInclude Include="boost\config\posix_features.hpp" />
+    <ClInclude Include="boost\config\requires_threads.hpp" />
+    <ClInclude Include="boost\config\select_compiler_config.hpp" />
+    <ClInclude Include="boost\config\select_platform_config.hpp" />
+    <ClInclude Include="boost\config\select_stdlib_config.hpp" />
+    <ClInclude Include="boost\config\suffix.hpp" />
+    <ClInclude Include="boost\config\user.hpp" />
+    <ClInclude Include="boost\detail\algorithm.hpp" />
+    <ClInclude Include="boost\detail\allocator.hpp" />
+    <ClInclude Include="boost\detail\atomic_count.hpp" />
+    <ClInclude Include="boost\detail\atomic_count_gcc.hpp" />
+    <ClInclude Include="boost\detail\atomic_count_linux.hpp" />
+    <ClInclude Include="boost\detail\atomic_count_pthreads.hpp" />
+    <ClInclude Include="boost\detail\atomic_count_win32.hpp" />
+    <ClInclude Include="boost\detail\bad_weak_ptr.hpp" />
+    <ClInclude Include="boost\detail\binary_search.hpp" />
+    <ClInclude Include="boost\detail\call_traits.hpp" />
+    <ClInclude Include="boost\detail\catch_exceptions.hpp" />
+    <ClInclude Include="boost\detail\compressed_pair.hpp" />
+    <ClInclude Include="boost\detail\dynamic_bitset.hpp" />
+    <ClInclude Include="boost\detail\interlocked.hpp" />
+    <ClInclude Include="boost\detail\in_place_factory.hpp" />
+    <ClInclude Include="boost\detail\in_place_factory_prefix.hpp" />
+    <ClInclude Include="boost\detail\in_place_factory_suffix.hpp" />
+    <ClInclude Include="boost\detail\is_incrementable.hpp" />
+    <ClInclude Include="boost\detail\iterator.hpp" />
+    <ClInclude Include="boost\detail\lightweight_mutex.hpp" />
+    <ClInclude Include="boost\detail\lightweight_test.hpp" />
+    <ClInclude Include="boost\detail\limits.hpp" />
+    <ClInclude Include="boost\detail\lwm_gcc.hpp" />
+    <ClInclude Include="boost\detail\lwm_irix.hpp" />
+    <ClInclude Include="boost\detail\lwm_linux.hpp" />
+    <ClInclude Include="boost\detail\lwm_nop.hpp" />
+    <ClInclude Include="boost\detail\lwm_pthreads.hpp" />
+    <ClInclude Include="boost\detail\lwm_win32.hpp" />
+    <ClInclude Include="boost\detail\lwm_win32_cs.hpp" />
+    <ClInclude Include="boost\detail\lwm_win32_nt.hpp" />
+    <ClInclude Include="boost\detail\named_template_params.hpp" />
+    <ClInclude Include="boost\detail\none.hpp" />
+    <ClInclude Include="boost\detail\none_t.hpp" />
+    <ClInclude Include="boost\detail\numeric_traits.hpp" />
+    <ClInclude Include="boost\detail\ob_call_traits.hpp" />
+    <ClInclude Include="boost\detail\ob_compressed_pair.hpp" />
+    <ClInclude Include="boost\detail\quick_allocator.hpp" />
+    <ClInclude Include="boost\detail\reference_content.hpp" />
+    <ClInclude Include="boost\detail\select_type.hpp" />
+    <ClInclude Include="boost\detail\shared_array_nmt.hpp" />
+    <ClInclude Include="boost\detail\shared_count.hpp" />
+    <ClInclude Include="boost\detail\shared_ptr_nmt.hpp" />
+    <ClInclude Include="boost\detail\sp_counted_base.hpp" />
+    <ClInclude Include="boost\detail\sp_counted_base_cw_ppc.hpp" />
+    <ClInclude Include="boost\detail\sp_counted_base_cw_x86.hpp" />
+    <ClInclude Include="boost\detail\sp_counted_base_gcc_ia64.hpp" />
+    <ClInclude Include="boost\detail\sp_counted_base_gcc_ppc.hpp" />
+    <ClInclude Include="boost\detail\sp_counted_base_gcc_x86.hpp" />
+    <ClInclude Include="boost\detail\sp_counted_base_nt.hpp" />
+    <ClInclude Include="boost\detail\sp_counted_base_pt.hpp" />
+    <ClInclude Include="boost\detail\sp_counted_base_w32.hpp" />
+    <ClInclude Include="boost\detail\sp_counted_impl.hpp" />
+    <ClInclude Include="boost\detail\templated_streams.hpp" />
+    <ClInclude Include="boost\detail\typed_in_place_factory.hpp" />
+    <ClInclude Include="boost\detail\workaround.hpp" />
+    <ClInclude Include="boost\assert.hpp" />
+    <ClInclude Include="boost\checked_delete.hpp" />
+    <ClInclude Include="boost\config.hpp" />
+    <ClInclude Include="boost\enable_shared_from_this.hpp" />
+    <ClInclude Include="boost\intrusive_ptr.hpp" />
+    <ClInclude Include="boost\scoped_array.hpp" />
+    <ClInclude Include="boost\scoped_ptr.hpp" />
+    <ClInclude Include="boost\shared_array.hpp" />
+    <ClInclude Include="boost\shared_ptr.hpp" />
+    <ClInclude Include="boost\smart_ptr.hpp" />
+    <ClInclude Include="boost\throw_exception.hpp" />
+    <ClInclude Include="boost\weak_ptr.hpp" />
+    <ClInclude Include="maingui.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="splashscreen.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="md5\md5.hh" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="wxFormBuilder.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\sdk\plugin_interface\plugin-interface.vcxproj">
+      <Project>{3a22773a-5e2d-d848-898d-5e7cfc686528}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\sdk\tinyxml\TiCPP.vcxproj">
+      <Project>{92f2c3b6-0ef4-ac40-b61b-d461805f1075}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
