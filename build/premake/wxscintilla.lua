@@ -28,8 +28,8 @@ project "wxScintilla"
     }
     targetsuffix        ( "-" .. wxVersion .. "_wxfb" )
 	
-	if wxArchitecture then
-		buildoptions	{"-arch " .. wxArchitecture}
+	if wxArchitecture then
+		buildoptions	{"-arch " .. wxArchitecture}
 	end
 
     configuration "linux or bsd"

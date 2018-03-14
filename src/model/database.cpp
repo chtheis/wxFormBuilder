@@ -784,7 +784,11 @@ void ObjectDatabase::SetupPackage( const wxString& file, const wxString& path, P
 			wxFileName::SetCwd( libPath );
 			try
 			{
+# ifdef _DEBUG
+        wxString fullLibPath = libPath + wxFILE_SEP_PATH + _WXSTR(lib) + wxT('d') + wxver;
+# else
 				wxString fullLibPath = libPath + wxFILE_SEP_PATH + _WXSTR(lib) + wxver;
+# endif
 				if ( m_importedLibraries.insert( fullLibPath ).second )
 				{
 					ImportComponentLibrary( fullLibPath, manager );

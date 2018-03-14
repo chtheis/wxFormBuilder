@@ -55,8 +55,8 @@ end
 		end
 
     configuration "Release"
-		-- if wxCompiler == "gcc" then
-		-- 	 linkoptions {"-s"}
+		-- if wxCompiler == "gcc" then
+		-- 	 linkoptions {"-s"}
 		-- end
         defines         {"NDEBUG"}
         -- flags           {"OptimizeSpeed"}

@@ -38,8 +38,8 @@ else
     }
 end
 
-	if wxArchitecture then
-		buildoptions	{"-arch " .. wxArchitecture}
+	if wxArchitecture then
+		buildoptions	{"-arch " .. wxArchitecture}
 	end
 	
     configuration {"codelite", "not windows"}

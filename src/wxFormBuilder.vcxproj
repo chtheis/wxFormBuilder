@@ -9,6 +9,10 @@
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Noopt|Win32">
+      <Configuration>Noopt</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{2134A842-F3D8-A84E-A756-BF30F98BE972}</ProjectGuid>
@@ -27,6 +31,11 @@
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Noopt|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
@@ -36,12 +45,18 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Noopt|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../output\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Noopt|Win32'">../output\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.objsu\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Noopt|Win32'">.objsu\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Noopt|Win32'">false</LinkIncremental>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../output\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.objsud\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
@@ -50,7 +65,38 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>controls/include;boost;../src;../sdk/ticpp;../sdk/plugin_interface;$(WXWIN)/include;$(WXWIN)/lib/vc_dll/mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>controls/include;boost;../src;../sdk/tinyxml;../sdk/plugin_interface;$(WXWIN)/include;$(WXWIN)/lib/vc_dll/mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WXUSINGDLL_FNB;TIXML_USE_TICPP;NO_GCC_PRAGMA;SCI_NAMESPACE;WXUSINGDLL;_CRT_SECURE_NO_WARNINGS;UNICODE;_UNICODE;__WX__;__WXMSW__;WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <PrecompiledHeaderFile>StdAfx.h</PrecompiledHeaderFile>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WXUSINGDLL_FNB;TIXML_USE_TICPP;NO_GCC_PRAGMA;SCI_NAMESPACE;USE_FLATNOTEBOOK;WXUSINGDLL;UNICODE;_UNICODE;__WX__;__WXMSW__;WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>controls/include;boost;../src;../sdk/tinyxml;../sdk/plugin_interface;$(WXWIN)/include;$(WXWIN)/lib/vc_dll/mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>../sdk/lib/ticpp.lib;../sdk/lib/wxfb-plugin-interface.lib;wxbase31u.lib;wxmsw31u_core.lib;wxmsw31u_adv.lib;wxmsw31u_aui.lib;wxmsw31u_html.lib;wxmsw31u_stc.lib;wxmsw31u_propgrid.lib;wxmsw31u_xrc.lib;imagehlp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)wxFormBuilder.exe</OutputFile>
+      <AdditionalLibraryDirectories>..;../output;../sdk/lib;$(WXWIN)/lib/vc_dll;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <EntryPointSymbol>
+      </EntryPointSymbol>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Noopt|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>controls/include;boost;../src;../sdk/tinyxml;../sdk/plugin_interface;$(WXWIN)/include;$(WXWIN)/lib/vc_dll/mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WXUSINGDLL_FNB;TIXML_USE_TICPP;NO_GCC_PRAGMA;SCI_NAMESPACE;WXUSINGDLL;_CRT_SECURE_NO_WARNINGS;UNICODE;_UNICODE;__WX__;__WXMSW__;WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -81,7 +127,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>controls/include;boost;../src;../sdk/ticpp;../sdk/plugin_interface;$(WXWIN)/include;$(WXWIN)/lib/vc_dll/mswud;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>controls/include;boost;../src;../sdk/tinyxml;../sdk/plugin_interface;$(WXWIN)/include;$(WXWIN)/lib/vc_dll/mswud;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WXUSINGDLL_FNB;TIXML_USE_TICPP;NO_GCC_PRAGMA;SCI_NAMESPACE;WXUSINGDLL;_CRT_SECURE_NO_WARNINGS;UNICODE;_UNICODE;__WX__;__WXMSW__;WIN32;_WINDOWS;DEBUG;_DEBUG;__WXDEBUG__;__WXFB_DEBUG__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -92,6 +138,7 @@
       <PrecompiledHeaderFile>StdAfx.h</PrecompiledHeaderFile>
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <UndefinePreprocessorDefinitions>wxUSE_STACKWALKER</UndefinePreprocessorDefinitions>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WXUSINGDLL_FNB;TIXML_USE_TICPP;NO_GCC_PRAGMA;SCI_NAMESPACE;USE_FLATNOTEBOOK;WXUSINGDLL;UNICODE;_UNICODE;__WX__;__WXMSW__;WIN32;_WINDOWS;DEBUG;_DEBUG;__WXDEBUG__;__WXFB_DEBUG__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -160,7 +207,6 @@
     <ClCompile Include="utils\wxfbipc.cpp" />
     <ClCompile Include="md5\md5.cc" />
     <ClCompile Include="maingui.cpp" />
-    <ClCompile Include="splashscreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="codegen\codegen.h" />
@@ -336,23 +382,12 @@
     <ClInclude Include="boost\weak_ptr.hpp" />
     <ClInclude Include="maingui.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="splashscreen.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="md5\md5.hh" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="wxFormBuilder.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\sdk\plugin_interface\plugin-interface.vcxproj">
-      <Project>{3a22773a-5e2d-d848-898d-5e7cfc686528}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="..\sdk\tinyxml\TiCPP.vcxproj">
-      <Project>{92f2c3b6-0ef4-ac40-b61b-d461805f1075}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

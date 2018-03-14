@@ -217,7 +217,6 @@
       <Filter>md5</Filter>
     </ClCompile>
     <ClCompile Include="maingui.cpp" />
-    <ClCompile Include="splashscreen.cpp" />
     <ClCompile Include="codegen\luacg.cpp">
       <Filter>codegen</Filter>
     </ClCompile>
@@ -735,7 +734,6 @@
     </ClInclude>
     <ClInclude Include="maingui.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="splashscreen.h" />
     <ClInclude Include="codegen\luacg.h">
       <Filter>codegen</Filter>
     </ClInclude>
