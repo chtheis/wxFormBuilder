@@ -25,10 +25,10 @@
 #ifndef __INNER_FRAME__
 #define __INNER_FRAME__
 
-#include <wx/wx.h>
-#include <wx/aui/aui.h>
-#include "utils/debug.h"
+#include "../../utils/debug.h"
 
+#include <wx/aui/aui.h>
+#include <wx/wx.h>
 
 class wxInnerFrame : public wxPanel
 {
@@ -54,7 +54,8 @@ private:
   wxPanel *m_frameContent;
   //wxAuiManager m_mgr
 protected:
-    wxSize DoGetBestSize() const;
+	wxSize DoGetBestSize() const override;
+
 public:
   wxInnerFrame(wxWindow *parent, wxWindowID id,
                  const wxPoint &pos = wxDefaultPosition,

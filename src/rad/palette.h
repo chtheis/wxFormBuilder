@@ -26,50 +26,30 @@
 #ifndef __PALETTE__
 #define __PALETTE__
 
-#include <wx/wx.h>
-#ifdef USE_FLATNOTEBOOK
-#include <wx/wxFlatNotebook/wxFlatNotebook.h>
-#else
-#include <wx/aui/auibook.h>
-#endif
-#include <wx/spinbutt.h>
-#include <vector>
-#include <utils/wxfbdefs.h>
-#include <model/database.h>
-#if wxVERSION_NUMBER >= 2900
-#include <wx/aui/auibar.h>
-#endif
+#include "../model/database.h"
 
-#if wxVERSION_NUMBER >= 2900
+#include <wx/aui/auibar.h>
+#include <wx/aui/auibook.h>
+#include <wx/spinbutt.h>
+
 typedef std::vector<wxAuiToolBar*> ToolbarVector;
-#else
-typedef std::vector<wxToolBar*> ToolbarVector;
-#endif
 
 class wxFbPalette : public wxPanel
 {
  private:
   ToolbarVector m_tv;
-#ifdef USE_FLATNOTEBOOK
-  wxFlatNotebook *m_notebook;
-  wxFlatNotebookImageList m_icons;
-#else
   wxAuiNotebook *m_notebook;
-#endif
   static wxWindowID nextId;
   std::vector<int> m_posVector;
 
-#if wxVERSION_NUMBER >= 2900
   void PopulateToolbar(PObjectPackage pkg, wxAuiToolBar *toolbar);
-#else
-  void PopulateToolbar(PObjectPackage pkg, wxToolBar *toolbar);
-#endif
 
   DECLARE_EVENT_TABLE()
 
  public:
   wxFbPalette(wxWindow *parent,int id);
-  ~wxFbPalette();
+
+	void SavePosition();
 
   /**
    * Crea la paleta, previamente se ha debido configurar el objeto

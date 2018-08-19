@@ -35,17 +35,13 @@
 #ifndef __LUA_PANEL__
 #define __LUA_PANEL__
 
-#include <wx/panel.h>
+#include "../../utils/wxfbdefs.h"
 
-#include "utils/wxfbdefs.h"
+#include <wx/panel.h>
 
 class CodeEditor;
 
-#if wxVERSION_NUMBER < 2900
-    class wxScintilla;
-#else
-    class wxStyledTextCtrl;
-#endif
+class wxStyledTextCtrl;
 
 class wxFindDialogEvent;
 
@@ -60,11 +56,7 @@ private:
 	CodeEditor* m_luaPanel;
 	PTCCodeWriter m_luaCW;
 
-#if wxVERSION_NUMBER < 2900
-    void InitStyledTextCtrl( wxScintilla* stc );
-#else
     void InitStyledTextCtrl( wxStyledTextCtrl* stc );
-#endif
 
 public:
 	LuaPanel( wxWindow *parent, int id );

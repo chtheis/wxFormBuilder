@@ -26,24 +26,15 @@
 #ifndef __CPP_PANEL__
 #define __CPP_PANEL__
 
-#include <wx/panel.h>
+#include "../../utils/wxfbdefs.h"
 
-#include "utils/wxfbdefs.h"
+#include <wx/panel.h>
 
 class CodeEditor;
 
-#if wxVERSION_NUMBER < 2900
-    class wxScintilla;
-#else
-    class wxStyledTextCtrl;
-#endif
+class wxStyledTextCtrl;
 
-#ifdef USE_FLATNOTEBOOK
-class wxFlatNotebook;
-class wxFlatNotebookImageList;
-#else
 class wxAuiNotebook;
-#endif
 
 class wxFindDialogEvent;
 
@@ -59,18 +50,9 @@ private:
 	CodeEditor* m_hPanel;
 	PTCCodeWriter m_hCW;
 	PTCCodeWriter m_cppCW;
-#ifdef USE_FLATNOTEBOOK
-	wxFlatNotebookImageList* m_icons;
-	wxFlatNotebook* m_notebook;
-#else
 	wxAuiNotebook* m_notebook;
-#endif
 
-#if wxVERSION_NUMBER < 2900
-	void InitStyledTextCtrl( wxScintilla* stc );
-#else
     void InitStyledTextCtrl( wxStyledTextCtrl* stc );
-#endif
 
 public:
 	CppPanel( wxWindow *parent, int id );

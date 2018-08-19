@@ -22,12 +22,10 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 #include "dataobject.h"
-#include "model/objectbase.h"
-#include "utils/typeconv.h"
-#include <ticpp.h>
-#include <string>
-#include "rad/appdata.h"
-#include <wx/utils.h>
+
+#include "../../model/objectbase.h"
+#include "../../utils/typeconv.h"
+#include "../appdata.h"
 
 #include <ticpp.h>
 
@@ -50,19 +48,11 @@ wxDataObject()
 		TiXmlPrinter printer;
         printer.SetIndent( "\t" );
 
-        #if defined( __WXMSW__ )
-            printer.SetLineBreak( "\r\n" );
-        #else
-            printer.SetLineBreak( "\n" );
-        #endif
+		printer.SetLineBreak("\n");
 
         doc.Accept( &printer );
 		m_data = printer.Str();
 	}
-}
-
-wxFBDataObject::~wxFBDataObject()
-{
 }
 
 void wxFBDataObject::GetAllFormats( wxDataFormat* formats, Direction dir ) const

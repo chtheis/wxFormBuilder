@@ -26,15 +26,11 @@
 #ifndef __MAIN_FRAME__
 #define __MAIN_FRAME__
 
-#include "wx/wx.h"
-#ifdef USE_FLATNOTEBOOK
-#include <wx/wxFlatNotebook/wxFlatNotebook.h>
-#else
-#include <wx/aui/auibook.h>
-#endif
 #include "wx/splitter.h"
-#include <wx/fdrepdlg.h>
+#include "wx/wx.h"
 
+#include <wx/aui/auibook.h>
+#include <wx/fdrepdlg.h>
 
 class wxFBEvent;
 class wxFBObjectEvent;
@@ -64,11 +60,6 @@ enum {
 class MainFrame : public wxFrame
 {
  private:
-  #ifdef __WXFB_DEBUG__
-  wxLog * m_old_log;
-  wxLogWindow * m_log;
-  #endif //__WXFB_DEBUG__
-
   wxSplitterWindow *m_leftSplitter;
   wxSplitterWindow *m_rightSplitter;
   int m_leftSplitterWidth;
@@ -76,12 +67,7 @@ class MainFrame : public wxFrame
   wxString m_rightSplitterType;
 
   //wxFrameManager m_mgr;
-#ifdef USE_FLATNOTEBOOK
-  wxFlatNotebook *m_notebook;
-  wxFlatNotebookImageList m_icons;
-#else
   wxAuiNotebook *m_notebook;
-#endif
   wxFbPalette *m_palette;
   ObjectTree *m_objTree;
   ObjectInspector *m_objInsp;
@@ -123,8 +109,8 @@ class MainFrame : public wxFrame
 
   DECLARE_EVENT_TABLE()
  public:
-  MainFrame(wxWindow *parent, int id = -1, int style = wxFB_DEFAULT_GUI, wxPoint pos = wxDefaultPosition, wxSize size = wxSize( 1000, 800 ) );
-  ~MainFrame();
+  MainFrame(wxWindow *parent, int id = wxID_ANY, int style = wxFB_DEFAULT_GUI, wxPoint pos = wxDefaultPosition, wxSize size = wxSize( 1000, 800 ) );
+	~MainFrame() override;
   void RestorePosition(const wxString &name);
   void SavePosition(const wxString &name);
   void OnSaveProject(wxCommandEvent &event);
@@ -157,11 +143,7 @@ class MainFrame : public wxFrame
   void OnGenInhertedClass(wxCommandEvent& e);
   void OnWindowSwap(wxCommandEvent& e);
 
-#ifdef USE_FLATNOTEBOOK
-  void OnFlatNotebookPageChanged( wxFlatNotebookEvent& event );
-#else
   void OnAuiNotebookPageChanged( wxAuiNotebookEvent& event );
-#endif
 
   void OnProjectLoaded( wxFBEvent& event );
   void OnProjectSaved( wxFBEvent& event );

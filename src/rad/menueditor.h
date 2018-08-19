@@ -25,12 +25,9 @@
 
 #ifndef __MENUEDITOR__
 #define __MENUEDITOR__
-#include <wx/wx.h>
-#include <wx/button.h>
+#include "../model/database.h"
+
 #include <wx/listctrl.h>
-#include <vector>
-#include "utils/wxfbdefs.h"
-#include "model/database.h"
 
 /**
  * Class MenuEditor
@@ -111,7 +108,7 @@ class MenuEditor : public wxDialog
   public:
 
     /** Constructor */
-    MenuEditor(wxWindow *parent, int id = -1);
+    MenuEditor(wxWindow *parent, int id = wxID_ANY);
 
     /** Rellena el wxListCtrl con los datos de "obj", que debe ser de tipo
     menubar */

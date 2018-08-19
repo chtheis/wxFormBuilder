@@ -32,10 +32,10 @@
 #ifndef __CODEGEN__
 #define __CODEGEN__
 
+#include "../model/types.h"
+#include "../utils/wxfbdefs.h"
+
 #include <wx/sstream.h>
-#include <map>
-#include "utils/wxfbdefs.h"
-#include "model/types.h"
 
 /**
 * Template notes
@@ -102,7 +102,6 @@ private:
 	// Current indentation level in the file
 	int m_indent;
 
-protected:
 	typedef enum {
 		TOK_ERROR,
 		TOK_MACRO,

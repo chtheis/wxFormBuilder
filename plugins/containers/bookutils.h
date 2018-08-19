@@ -26,9 +26,10 @@
 
 #include <component.h>
 #include <default.xpm>
-#include <wx/image.h>
-#include <wx/imaglist.h>
-#include <wx/notebook.h>
+#include <vector>
+#ifdef wxUSE_COLLPANE
+#include <wx/collpane.h>
+#endif
 #include <wx/listbook.h>
 #include <wx/choicebk.h>
 #include <wx/simplebook.h>

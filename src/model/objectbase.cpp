@@ -24,11 +24,12 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "objectbase.h"
-#include "wx/wx.h"
-#include "utils/debug.h"
-#include "utils/typeconv.h"
-#include "utils/stringutils.h"
-#include "rad/appdata.h"
+
+#include "../rad/appdata.h"
+#include "../utils/debug.h"
+#include "../utils/stringutils.h"
+#include "../utils/typeconv.h"
+
 #include <ticpp.h>
 #include <wx/tokenzr.h>
 
@@ -273,6 +274,17 @@ wxString ObjectBase::GetIndentString(int indent)
 	return s;
 }
 
+PObjectBase ObjectBase::GetNonSizerParent ()
+{
+	PObjectBase current = GetThis();
+
+	while ( ( current = current->GetParent() ) &&
+		( current->GetObjectInfo()->IsSubclassOf( wxT( "sizeritem" ) ) ||
+		  current->GetObjectInfo()->IsSubclassOf( wxT( "sizer" ) ) ) )
+		;
+
+	return current;
+}
 
 PProperty ObjectBase::GetProperty (wxString name)
 {
@@ -310,11 +322,7 @@ PEvent ObjectBase::GetEvent (wxString name)
 	if ( it != m_events.end() )
 		return it->second;
 
-#if wxVERSION_NUMBER < 2900
-	LogDebug(wxT("[ObjectBase::GetEvent] Event %s not found!"),name.c_str());
-#else
     LogDebug("[ObjectBase::GetEvent] Event " + name + " not found!");
-#endif
 	return PEvent();
 }
 
@@ -422,7 +430,8 @@ bool ObjectBase::ChildTypeOk (PObjectType type)
 	// check allowed child count
 	if( GetObjectInfo()->GetObjectType()->GetName() == wxT("form") )
 	{
-		nmax = GetObjectInfo()->GetObjectType()->FindChildType(type, this->GetPropertyAsInteger(wxT("aui_managed")));
+		nmax = GetObjectInfo()->GetObjectType()->FindChildType(
+		    type, this->GetPropertyAsInteger(wxT("aui_managed")) != 0);
 	}
 	else
 		nmax = GetObjectInfo()->GetObjectType()->FindChildType(type, false);

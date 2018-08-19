@@ -33,10 +33,8 @@ the wxFormBuilder GUI code.
 @date	01/14/2007
 */
 
-
+#include "../../utils/wxfbdefs.h"
 #include "geninhertclass_gui.h"
-#include <vector>
-#include "utils/wxfbdefs.h"
 
 /** Holds the details of the class to generate. */
 class GenClassDetails
@@ -78,10 +76,10 @@ public:
 private:
 	std::vector< GenClassDetails > m_classDetails;
 
-	void OnFormsSelected( wxCommandEvent& event );
-	void OnFormsToggle( wxCommandEvent& event );
-	void OnClassNameChange( wxCommandEvent& event );
-	void OnFileNameChange( wxCommandEvent& event );
+	void OnFormsSelected(wxCommandEvent& event) override;
+	void OnFormsToggle(wxCommandEvent& event) override;
+	void OnClassNameChange(wxCommandEvent& event) override;
+	void OnFileNameChange(wxCommandEvent& event) override;
 };
 
 #endif //__GENINHERTCLASS_IMP__

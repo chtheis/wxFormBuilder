@@ -80,46 +80,32 @@ public:
 	virtual void Clear() = 0;
 };
 
-#if wxVERSION_NUMBER < 2900
-    class wxScintilla;
-#else
-    class wxStyledTextCtrl;
-#endif
+class wxStyledTextCtrl;
 
 class TCCodeWriter : public CodeWriter
 {
 private:
-
-#if wxVERSION_NUMBER < 2900
-    wxScintilla *m_tc;
-#else
-    wxStyledTextCtrl *m_tc;
-#endif
+	wxStyledTextCtrl* m_tc;
 
 protected:
-	void DoWrite( wxString code );
+	void DoWrite(wxString code) override;
 
 public:
 	TCCodeWriter();
-#if wxVERSION_NUMBER < 2900
-    TCCodeWriter( wxScintilla *tc );
-    void SetTextCtrl( wxScintilla* tc );
-#else
     TCCodeWriter( wxStyledTextCtrl *tc );
     void SetTextCtrl( wxStyledTextCtrl* tc );
-#endif
-	void Clear();
+	void Clear() override;
 };
 
 class StringCodeWriter : public CodeWriter
 {
 protected:
 	wxString m_buffer;
-	void DoWrite( wxString code );
+	void DoWrite(wxString code) override;
 
 public:
 	StringCodeWriter();
-	void Clear();
+	void Clear() override;
 	wxString GetString();
 };
 
@@ -135,8 +121,8 @@ protected:
 
 public:
 	FileCodeWriter( const wxString &file, bool useMicrosoftBOM = false, bool useUtf8 = true );
-	~FileCodeWriter();
-	void Clear();
+	~FileCodeWriter() override;
+	void Clear() override;
 };
 
 #endif //__CODE_WRITER__
