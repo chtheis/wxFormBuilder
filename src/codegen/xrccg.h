@@ -27,8 +27,6 @@
 #define _XRC_CODE_GEN_
 
 #include "codegen.h"
-#include "utils/wxfbdefs.h"
-#include <vector>
 
 namespace ticpp
 {
@@ -50,7 +48,7 @@ public:
 	void SetWriter( PCodeWriter cw );
 
 	/// Generates the XRC code for the project.
-	bool GenerateCode( PObjectBase project );
+	bool GenerateCode(PObjectBase project) override;
 };
 
 

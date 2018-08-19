@@ -27,19 +27,18 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "pythoncg.h"
+
+#include "../model/objectbase.h"
+#include "../rad/appdata.h"
+#include "../utils/debug.h"
+#include "../utils/typeconv.h"
+#include "../utils/wxfbexception.h"
 #include "codewriter.h"
-#include "utils/typeconv.h"
-#include "utils/debug.h"
-#include "rad/appdata.h"
-#include "model/objectbase.h"
-#include "model/database.h"
-#include "utils/wxfbexception.h"
 
 #include <algorithm>
 
 #include <wx/filename.h>
 #include <wx/tokenzr.h>
-#include <wx/defs.h>
 
 PythonTemplateParser::PythonTemplateParser( PObjectBase obj, wxString _template, bool useI18N, bool useRelativePath, wxString basePath )
 :
@@ -767,14 +766,23 @@ wxString PythonCodeGenerator::GetCode(PObjectBase obj, wxString name, bool silen
 
 	_template = code_info->GetTemplate(name);
 
+	PObjectBase parent = obj->GetNonSizerParent();
+	if ( parent && ( parent->GetClassName() == wxT( "wxCollapsiblePane" ) ) )
+	{
+		wxString parentTemplate = wxT( "#wxparent $name" );
+		_template.Replace( parentTemplate, parentTemplate + wxT( ".GetPane()" ) );
+	}
+
 	PythonTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
 	wxString code = parser.ParseTemplate();
 
 	return code;
 }
 
-void PythonCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool use_enum, const wxString& classDecoration, const EventVector &events, const wxString& eventHandlerPostfix)
-{
+void PythonCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool /*use_enum*/,
+                                              const wxString& classDecoration,
+                                              const EventVector& events,
+                                              const wxString& eventHandlerPostfix) {
 	PProperty propName = class_obj->GetProperty( wxT("name") );
 	if ( !propName )
 	{
@@ -1042,9 +1050,9 @@ void PythonCodeGenerator::GenDestructor( PObjectBase class_obj, const EventVecto
 	if ( m_disconnectEvents && !events.empty() )
 	{
 		GenEvents( class_obj, events, true );
+	} else if (class_obj->GetPropertyAsInteger(wxT("aui_managed")) == 0) {
+		m_source->WriteLn(wxT("pass"));
 	}
-	else
-		if( !class_obj->GetPropertyAsInteger( wxT("aui_managed") ) ) m_source->WriteLn( wxT("pass") );
 
 	// destruct objects
 	GenDestruction( class_obj );
@@ -1092,10 +1100,17 @@ void PythonCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget )
 				// It's not a good practice to embed templates into the source code,
 				// because you will need to recompile...
 
-				wxString _template =	wxT("#wxparent $name.SetSizer( $name ) #nl")
-										wxT("#wxparent $name.Layout()")
-										wxT("#ifnull #parent $size")
-										wxT("@{ #nl $name.Fit( #wxparent $name ) @}");
+				wxString _template;
+				wxString parentPostfix;
+				if ( obj->GetParent()->GetClassName() == wxT( "wxCollapsiblePane" ) )
+					parentPostfix = ".GetPane()";
+				else
+					parentPostfix = wxEmptyString;
+
+				_template = wxT( "#wxparent $name" ) + parentPostfix + wxT( ".SetSizer( $name ) #nl" )
+					    wxT( "#wxparent $name" ) + parentPostfix + wxT( ".Layout()" )
+					    wxT( "#ifnull #parent $size" )
+					    wxT( "@{ #nl $name.Fit( #wxparent $name" ) + parentPostfix + wxT( " ) @}" );
 
 				PythonTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
 				m_source->WriteLn(parser.ParseTemplate());
@@ -1596,6 +1611,7 @@ void PythonTemplateParser::SetupModulePrefixes()
 	ADD_PREDEFINED_PREFIX( wxGrid, wx.grid. );
 	ADD_PREDEFINED_PREFIX( wxAnimationCtrl, wx.adv. );
 	ADD_PREDEFINED_PREFIX( wxDatePickerCtrl, wx.adv. );
+	ADD_PREDEFINED_PREFIX( wxHyperlinkCtrl, wx.adv. );
 
 	// altered macros
 	ADD_PREDEFINED_PREFIX( wxCAL_SHOW_HOLIDAYS, wx.adv. );
@@ -1605,6 +1621,12 @@ void PythonTemplateParser::SetupModulePrefixes()
 	ADD_PREDEFINED_PREFIX( wxCAL_SEQUENTIAL_MONTH_SELECTION, wx.adv. );
 	ADD_PREDEFINED_PREFIX( wxCAL_SHOW_SURROUNDING_WEEKS, wx.adv. );
 	ADD_PREDEFINED_PREFIX( wxCAL_SUNDAY_FIRST, wx.adv. );
+
+	ADD_PREDEFINED_PREFIX( wxHL_ALIGN_CENTRE, wx.adv. );
+	ADD_PREDEFINED_PREFIX( wxHL_ALIGN_LEFT, wx.adv. );
+	ADD_PREDEFINED_PREFIX( wxHL_ALIGN_RIGHT, wx.adv. );
+	ADD_PREDEFINED_PREFIX( wxHL_CONTEXTMENU, wx.adv. );
+	ADD_PREDEFINED_PREFIX( wxHL_DEFAULT_STYLE, wx.adv. );
 
 	ADD_PREDEFINED_PREFIX( wxHW_DEFAULT_STYLE, wx.html. );
 	ADD_PREDEFINED_PREFIX( wxHW_NO_SELECTION, wx.html. );
@@ -1705,8 +1727,8 @@ void PythonTemplateParser::SetupModulePrefixes()
 	ADD_PREDEFINED_PREFIX( wxDV_VERT_RULES, wx.dataview. );
 	ADD_PREDEFINED_PREFIX( wxDV_VARIABLE_LINE_HEIGHT, wx.dataview. );
 	ADD_PREDEFINED_PREFIX( wxDV_NO_HEADER, wx.dataview. );
-    
-    ADD_PREDEFINED_PREFIX( wxTL_SINGLE, wx.dataview. );
+
+	ADD_PREDEFINED_PREFIX( wxTL_SINGLE, wx.dataview. );
 	ADD_PREDEFINED_PREFIX( wxTL_MULTIPLE, wx.dataview. );
 	ADD_PREDEFINED_PREFIX( wxTL_CHECKBOX, wx.dataview. );
 	ADD_PREDEFINED_PREFIX( wxTL_3STATE, wx.dataview. );

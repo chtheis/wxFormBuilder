@@ -8,7 +8,7 @@ matrix:
       script:
         - mkdir -p .cache
         - "tar --xattrs --xattrs-include=* -xf .cache/cache.tar || true"
-        - docker run --privileged -v$PWD:/w -it fedora:rawhide /bin/sh -c "cd /w/install/linux && ./flatpak.sh"
+        - docker run --privileged -v$PWD:/w -it fedora:28 /bin/sh -c "cd /w/install/linux && ./flatpak.sh"
       env: DEPLOY_FILE=install/linux/wxformbuilder.flatpak
       before_cache:
         - tar --xattrs --xattrs-include=* -cpf .cache/cache.tar install/linux/.flatpak-builder/
@@ -19,9 +19,10 @@ matrix:
       script:
         - brew update
         - brew outdated boost || brew upgrade boost
-        - brew install wxmac boost dylibbundler
-        - ./create_build_files4.sh --disable-mediactrl
-        - make config=release -C build/3.0/gmake
+        - brew install boost dylibbundler make
+        - travis_wait 40 brew install wxmac --devel
+        - ./create_build_files4.sh
+        - make config=release -C build/3.1/gmake
         - cd output && zip -ry wxFormBuilder_macOS.zip wxFormBuilder.app && ls && cd -
       env: DEPLOY_FILE=output/wxFormBuilder_macOS.zip
 deploy:

@@ -24,39 +24,32 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "appdata.h"
+
 #include "bitmaps.h"
 #include "wxfbevent.h"
 #include "wxfbmanager.h"
 
-#include "model/objectbase.h"
-#include "utils/typeconv.h"
-#include "utils/debug.h"
-#include "utils/stringutils.h"
-#include "utils/wxfbipc.h"
-#include "utils/wxfbexception.h"
-#include "codegen/cppcg.h"
-#include "codegen/pythoncg.h"
-#include "codegen/phpcg.h"
-#include "codegen/luacg.h"
-#include "codegen/xrccg.h"
-#include "codegen/codewriter.h"
-#include "rad/xrcpreview/xrcpreview.h"
-#include "rad/dataobject/dataobject.h"
+#include "../codegen/codewriter.h"
+#include "../codegen/cppcg.h"
+#include "../codegen/luacg.h"
+#include "../codegen/phpcg.h"
+#include "../codegen/pythoncg.h"
+#include "../model/objectbase.h"
+#include "../utils/stringutils.h"
+#include "../utils/typeconv.h"
+#include "../utils/wxfbexception.h"
+#include "../utils/wxfbipc.h"
+#include "dataobject/dataobject.h"
+#include "xrcpreview/xrcpreview.h"
 
 #include <ticpp.h>
-#include <set>
-#include <iterator>
-#include <memory>
-#include <sstream>
-#include <algorithm>
 
-#include <wx/tokenzr.h>
-#include <wx/ffile.h>
-#include <wx/filename.h>
 #include <wx/clipbrd.h>
-#include <wx/fs_mem.h>
+#include <wx/ffile.h>
 #include <wx/fs_arc.h>
 #include <wx/fs_filter.h>
+#include <wx/fs_mem.h>
+#include <wx/tokenzr.h>
 
 using namespace TypeConv;
 
@@ -75,8 +68,8 @@ class ExpandObjectCmd : public Command
 		bool m_expand;
 
 	protected:
-		void DoExecute();
-		void DoRestore();
+		void DoExecute() override;
+		void DoRestore() override;
 
 	public:
 		ExpandObjectCmd( PObjectBase object, bool expand );
@@ -98,8 +91,8 @@ class InsertObjectCmd : public Command
 
 
 	protected:
-		void DoExecute();
-		void DoRestore();
+		void DoExecute() override;
+		void DoRestore() override;
 
 	public:
 		InsertObjectCmd( ApplicationData *data, PObjectBase object, PObjectBase parent, int pos = -1 );
@@ -120,8 +113,8 @@ class RemoveObjectCmd : public Command
 		PObjectBase m_oldSelected;
 
 	protected:
-		void DoExecute();
-		void DoRestore();
+		void DoExecute() override;
+		void DoRestore() override;
 
 	public:
 		RemoveObjectCmd( ApplicationData *data, PObjectBase object );
@@ -139,8 +132,8 @@ class ModifyPropertyCmd : public Command
 		wxString m_oldValue, m_newValue;
 
 	protected:
-		void DoExecute();
-		void DoRestore();
+		void DoExecute() override;
+		void DoRestore() override;
 
 	public:
 		ModifyPropertyCmd( PProperty prop, wxString value );
@@ -158,8 +151,8 @@ class ModifyEventHandlerCmd : public Command
 		wxString m_oldValue, m_newValue;
 
 	protected:
-		void DoExecute();
-		void DoRestore();
+		void DoExecute() override;
+		void DoRestore() override;
 
 	public:
 		ModifyEventHandlerCmd( PEvent event, wxString value );
@@ -177,8 +170,8 @@ class ShiftChildCmd : public Command
 		int m_oldPos, m_newPos;
 
 	protected:
-		void DoExecute();
-		void DoRestore();
+		void DoExecute() override;
+		void DoRestore() override;
 
 	public:
 		ShiftChildCmd( PObjectBase object, int pos );
@@ -203,8 +196,8 @@ class CutObjectCmd : public Command
 		PObjectBase m_oldSelected;
 
 	protected:
-		void DoExecute();
-		void DoRestore();
+		void DoExecute() override;
+		void DoRestore() override;
 
 	public:
 		CutObjectCmd( ApplicationData *data, PObjectBase object );
@@ -224,8 +217,8 @@ class ReparentObjectCmd : public Command
 		int m_oldPosition;
 
 	protected:
-		void DoExecute();
-		void DoRestore();
+		void DoExecute() override;
+		void DoRestore() override;
 
 	public:
 		ReparentObjectCmd ( PObjectBase sizeritem, PObjectBase sizer );
@@ -477,7 +470,7 @@ ApplicationData::ApplicationData( const wxString &rootdir )
 		m_manager( new wxFBManager ),
 		m_ipc( new wxFBIPC ),
 		m_fbpVerMajor( 1 ),
-		m_fbpVerMinor( 13 )
+		m_fbpVerMinor(15)
 {
 	#ifdef __WXFB_DEBUG__
 	//wxLog* log = wxLog::SetActiveTarget( NULL );
@@ -762,11 +755,7 @@ void ApplicationData::CreateObject( wxString name )
 {
 	try
 	{
-#if wxVERSION_NUMBER < 2900
-		LogDebug( wxT( "[ApplicationData::CreateObject] New %s" ), name.c_str() );
-#else
         LogDebug("[ApplicationData::CreateObject] New " + name );
-#endif
 		PObjectBase old_selected = GetSelectedObject();
 		PObjectBase parent = old_selected;
 		PObjectBase obj;
@@ -1957,7 +1946,272 @@ void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int 
 			}
 		}
 	}
+
 	/* The file is now at least version 1.12 */
+	// TODO: Dont know where Version 1.13 comes from, so this is for Version 1.14
+	if (fileMajor < 1 || (1 == fileMajor && fileMinor < 14)) {
+		// Rename all wx*_BORDER-Styles to wxBORDER_*-Styles and remove wxDOUBLE_BORDER
+		oldProps.clear();
+		newProps.clear();
+		oldProps.insert("style");
+		oldProps.insert("window_style");
+		GetPropertiesToConvert(parent, oldProps, &newProps);
+
+		for (newProp = newProps.begin(); newProp != newProps.end(); ++newProp) {
+			wxString styles = _WXSTR((*newProp)->GetText(false));
+			if (!styles.empty()) {
+				if (TypeConv::FlagSet(wxT("wxSIMPLE_BORDER"), styles)) {
+					styles = TypeConv::ClearFlag(wxT("wxSIMPLE_BORDER"), styles);
+					styles = TypeConv::SetFlag(wxT("wxBORDER_SIMPLE"), styles);
+				}
+
+				if (TypeConv::FlagSet(wxT("wxDOUBLE_BORDER"), styles)) {
+					styles = TypeConv::ClearFlag(wxT("wxDOUBLE_BORDER"), styles);
+				}
+
+				if (TypeConv::FlagSet(wxT("wxSUNKEN_BORDER"), styles)) {
+					styles = TypeConv::ClearFlag(wxT("wxSUNKEN_BORDER"), styles);
+					styles = TypeConv::SetFlag(wxT("wxBORDER_SUNKEN"), styles);
+				}
+
+				if (TypeConv::FlagSet(wxT("wxRAISED_BORDER"), styles)) {
+					styles = TypeConv::ClearFlag(wxT("wxRAISED_BORDER"), styles);
+					styles = TypeConv::SetFlag(wxT("wxBORDER_RAISED"), styles);
+				}
+
+				if (TypeConv::FlagSet(wxT("wxSTATIC_BORDER"), styles)) {
+					styles = TypeConv::ClearFlag(wxT("wxSTATIC_BORDER"), styles);
+					styles = TypeConv::SetFlag(wxT("wxBORDER_STATIC"), styles);
+				}
+
+				if (TypeConv::FlagSet(wxT("wxNO_BORDER"), styles)) {
+					styles = TypeConv::ClearFlag(wxT("wxNO_BORDER"), styles);
+					styles = TypeConv::SetFlag(wxT("wxBORDER_NONE"), styles);
+				}
+
+				(*newProp)->SetText(_STDSTR(styles));
+			}
+		}
+
+		// wxBitmapButton: Remove wxBU_AUTODRAW and rename properties selected->pressed,
+		// hover->current
+		if ("wxBitmapButton" == objClass) {
+			oldProps.clear();
+			newProps.clear();
+			oldProps.insert("style");
+			GetPropertiesToConvert(parent, oldProps, &newProps);
+
+			if (!newProps.empty()) {
+				ticpp::Element* style = *newProps.begin();
+				wxString styles = _WXSTR(style->GetText(false));
+				if (!styles.empty()) {
+					if (TypeConv::FlagSet(wxT("wxBU_AUTODRAW"), styles)) {
+						styles = TypeConv::ClearFlag(wxT("wxBU_AUTODRAW"), styles);
+					}
+
+					style->SetText(_STDSTR(styles));
+				}
+			}
+
+			oldProps.clear();
+			newProps.clear();
+			oldProps.insert("selected");
+			GetPropertiesToConvert(parent, oldProps, &newProps);
+
+			if (!newProps.empty()) { (*newProps.begin())->SetAttribute("name", "pressed"); }
+
+			oldProps.clear();
+			newProps.clear();
+			oldProps.insert("hover");
+			GetPropertiesToConvert(parent, oldProps, &newProps);
+
+			if (!newProps.empty()) { (*newProps.begin())->SetAttribute("name", "current"); }
+		}
+
+		// wxStaticText: Rename wxALIGN_CENTRE -> wxALIGN_CENTER_HORIZONTAL
+		else if ("wxStaticText" == objClass) {
+			oldProps.clear();
+			newProps.clear();
+			oldProps.insert("style");
+			GetPropertiesToConvert(parent, oldProps, &newProps);
+
+			if (!newProps.empty()) {
+				ticpp::Element* style = *newProps.begin();
+				wxString styles = _WXSTR(style->GetText(false));
+				if (!styles.empty()) {
+					if (TypeConv::FlagSet(wxT("wxALIGN_CENTRE"), styles)) {
+						styles = TypeConv::ClearFlag(wxT("wxALIGN_CENTRE"), styles);
+						styles = TypeConv::SetFlag(wxT("wxALIGN_CENTER_HORIZONTAL"), styles);
+					}
+
+					style->SetText(_STDSTR(styles));
+				}
+			}
+		}
+
+		// wxRadioBox: Remove wxRA_USE_CHECKBOX
+		else if ("wxRadioBox" == objClass) {
+			oldProps.clear();
+			newProps.clear();
+			oldProps.insert("style");
+			GetPropertiesToConvert(parent, oldProps, &newProps);
+
+			if (!newProps.empty()) {
+				ticpp::Element* style = *newProps.begin();
+				wxString styles = _WXSTR(style->GetText(false));
+				if (!styles.empty()) {
+					if (TypeConv::FlagSet(wxT("wxRA_USE_CHECKBOX"), styles)) {
+						styles = TypeConv::ClearFlag(wxT("wxRA_USE_CHECKBOX"), styles);
+					}
+
+					style->SetText(_STDSTR(styles));
+				}
+			}
+		}
+
+		// wxRadioButton: Remove wxRB_USE_CHECKBOX
+		else if ("wxRadioButton" == objClass) {
+			oldProps.clear();
+			newProps.clear();
+			oldProps.insert("style");
+			GetPropertiesToConvert(parent, oldProps, &newProps);
+
+			if (!newProps.empty()) {
+				ticpp::Element* style = *newProps.begin();
+				wxString styles = _WXSTR(style->GetText(false));
+				if (!styles.empty()) {
+					if (TypeConv::FlagSet(wxT("wxRB_USE_CHECKBOX"), styles)) {
+						styles = TypeConv::ClearFlag(wxT("wxRB_USE_CHECKBOX"), styles);
+					}
+
+					style->SetText(_STDSTR(styles));
+				}
+			}
+		}
+
+		// wxStatusBar: Rename wxST_SIZEGRIP -> wxSTB_SIZEGRIP
+		else if ("wxStatusBar" == objClass) {
+			oldProps.clear();
+			newProps.clear();
+			oldProps.insert("style");
+			GetPropertiesToConvert(parent, oldProps, &newProps);
+
+			if (!newProps.empty()) {
+				ticpp::Element* style = *newProps.begin();
+				wxString styles = _WXSTR(style->GetText(false));
+				if (!styles.empty()) {
+					if (TypeConv::FlagSet(wxT("wxST_SIZEGRIP"), styles)) {
+						styles = TypeConv::ClearFlag(wxT("wxST_SIZEGRIP"), styles);
+						styles = TypeConv::SetFlag(wxT("wxSTB_SIZEGRIP"), styles);
+					}
+
+					style->SetText(_STDSTR(styles));
+				}
+			}
+		}
+
+		// wxMenuBar: Remove wxMB_DOCKABLE
+		else if ("wxMenuBar" == objClass) {
+			oldProps.clear();
+			newProps.clear();
+			oldProps.insert("style");
+			GetPropertiesToConvert(parent, oldProps, &newProps);
+
+			if (!newProps.empty()) {
+				ticpp::Element* style = *newProps.begin();
+				wxString styles = _WXSTR(style->GetText(false));
+				if (!styles.empty()) {
+					if (TypeConv::FlagSet(wxT("wxMB_DOCKABLE"), styles)) {
+						styles = TypeConv::ClearFlag(wxT("wxMB_DOCKABLE"), styles);
+					}
+
+					style->SetText(_STDSTR(styles));
+				}
+			}
+		}
+	}
+
+	/* The file is now at least version 1.14 */
+	if (fileMajor < 1 || (1 == fileMajor && fileMinor < 15))
+	{
+		// Rename wxTE_CENTRE -> wxTE_CENTER
+		if ("wxTextCtrl" == objClass || "wxSearchCtrl" == objClass)
+		{
+			oldProps.clear();
+			newProps.clear();
+			oldProps.insert("style");
+			GetPropertiesToConvert(parent, oldProps, &newProps);
+
+			if (!newProps.empty())
+			{
+				auto* style = *newProps.begin();
+				auto styles = _WXSTR(style->GetText(false));
+				if (!styles.empty())
+				{
+					if (TypeConv::FlagSet(wxT("wxTE_CENTRE"), styles))
+					{
+						styles = TypeConv::ClearFlag(wxT("wxTE_CENTRE"), styles);
+						styles = TypeConv::SetFlag(wxT("wxTE_CENTER"), styles);
+					}
+
+					style->SetText(_STDSTR(styles));
+				}
+			}
+		}
+		// Rename wxALIGN_CENTRE -> wxALIGN_CENTER
+		else if ("wxGrid" == objClass)
+		{
+			oldProps.clear();
+			newProps.clear();
+			oldProps.insert("col_label_horiz_alignment");
+			oldProps.insert("col_label_vert_alignment");
+			oldProps.insert("row_label_horiz_alignment");
+			oldProps.insert("row_label_vert_alignment");
+			oldProps.insert("cell_horiz_alignment");
+			oldProps.insert("cell_vert_alignment");
+			GetPropertiesToConvert(parent, oldProps, &newProps);
+
+			for (newProp = newProps.begin(); newProp != newProps.end(); ++newProp)
+			{
+				auto styles = _WXSTR((*newProp)->GetText(false));
+				if (!styles.empty())
+				{
+					if (TypeConv::FlagSet(wxT("wxALIGN_CENTRE"), styles))
+					{
+						styles = TypeConv::ClearFlag(wxT("wxALIGN_CENTRE"), styles);
+						styles = TypeConv::SetFlag(wxT("wxALIGN_CENTER"), styles);
+					}
+
+					(*newProp)->SetText(_STDSTR(styles));
+				}
+			}
+		}
+		// wxNotebook: Remove wxNB_FLAT
+		else if ("wxNotebook" == objClass)
+		{
+			oldProps.clear();
+			newProps.clear();
+			oldProps.insert("style");
+			GetPropertiesToConvert(parent, oldProps, &newProps);
+
+			if (!newProps.empty())
+			{
+				auto* style = *newProps.begin();
+				auto styles = _WXSTR(style->GetText(false));
+				if (!styles.empty())
+				{
+					if (TypeConv::FlagSet(wxT("wxNB_FLAT"), styles))
+					{
+						styles = TypeConv::ClearFlag(wxT("wxNB_FLAT"), styles);
+					}
+
+					style->SetText(_STDSTR(styles));
+				}
+			}
+		}
+	}
+
+	/* The file is now at least version 1.15 */
 }
 
 void ApplicationData::GetPropertiesToConvert( ticpp::Node* parent, const std::set< std::string >& names, std::set< ticpp::Element* >* properties )
@@ -2047,6 +2301,7 @@ void ApplicationData::TransferOptionList( ticpp::Element* prop, std::set< wxStri
 		oldProps.insert( newPropName );
 		GetPropertiesToConvert( parent, oldProps, &newProps );
 
+		std::unique_ptr<ticpp::Element> tmpProp;
 		if ( !newProps.empty() )
 		{
 			newProp = *newProps.begin();
@@ -2054,7 +2309,8 @@ void ApplicationData::TransferOptionList( ticpp::Element* prop, std::set< wxStri
 		}
 		else
 		{
-			newProp = new ticpp::Element( "property" );
+			tmpProp = std::make_unique<ticpp::Element>("property");
+			newProp = tmpProp.get();
 			newProp->SetAttribute( "name", newPropName );
 		}
 
@@ -2070,7 +2326,6 @@ void ApplicationData::TransferOptionList( ticpp::Element* prop, std::set< wxStri
 		if ( newProps.empty() )
 		{
 			parent->InsertBeforeChild( prop, *newProp );
-			delete newProp;
 		}
 	}
 
@@ -2110,11 +2365,7 @@ void ApplicationData::NewProject()
 
 void ApplicationData::GenerateCode( bool panelOnly, bool noDelayed )
 {
-#ifdef USE_FLATNOTEBOOK
-	NotifyCodeGeneration( panelOnly );
-#else
 	NotifyCodeGeneration( panelOnly, !noDelayed );
-#endif
 }
 
 void ApplicationData::GenerateInheritedClass( PObjectBase form, wxString className, wxString path, wxString file )
@@ -2431,11 +2682,7 @@ void ApplicationData::CheckProjectTree( PObjectBase obj )
 
 		if ( child->GetParent() != obj )
         {
-#if wxVERSION_NUMBER < 2900
-			wxLogError( wxString::Format( wxT( "Parent of object \'%s\' is wrong!" ), child->GetPropertyAsString( wxT( "name" ) ).c_str() ) );
-#else
 			wxLogError( wxString::Format("Parent of object \'" + child->GetPropertyAsString("name") + "\' is wrong!") );
-#endif
         }
 		CheckProjectTree( child );
 	}
@@ -2666,9 +2913,7 @@ void ApplicationData::ShowXrcPreview()
 	{
 		wxMessageBox( wxT( "Please select a form and try again." ), wxT( "XRC Preview" ), wxICON_ERROR );
 		return;
-	}
-	else if( form->GetPropertyAsInteger( wxT("aui_managed") ) )
-	{
+	} else if (form->GetPropertyAsInteger(wxT("aui_managed")) != 0) {
 		wxMessageBox( wxT( "XRC preview doesn't support AUI-managed frames." ), wxT( "XRC Preview" ), wxICON_ERROR );
 		return;
 	}
