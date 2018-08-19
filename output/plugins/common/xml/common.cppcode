@@ -27,8 +27,33 @@ Written by
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
     <template name="settings">
-    	#ifnotequal $default "0"
-    	@{ $name->SetDefault(); @}
+	    #ifequal $markup "1" @{
+		    $name->SetLabelMarkup( $label );
+	    @}
+	    #ifnotequal $default "0" @{
+		    #nl $name->SetDefault();
+	    @}
+
+			#ifnotnull $bitmap
+			@{ #nl $name->SetBitmap( $bitmap ); @}
+
+			#ifnotnull $disabled
+			@{ #nl $name->SetBitmapDisabled( $disabled ); @}
+
+			#ifnotnull $pressed
+			@{ #nl $name->SetBitmapPressed( $pressed ); @}
+
+			#ifnotnull $focus
+			@{ #nl $name->SetBitmapFocus( $focus ); @}
+
+			#ifnotnull $current
+			@{ #nl $name->SetBitmapCurrent( $current ); @}
+
+			#ifnotnull $position
+			@{ #nl $name->SetBitmapPosition( $position ); @}
+
+			#ifnotnull $margins
+			@{ #nl $name->SetBitmapMargins( $margins ); @}
     </template>
     <template name="include">@#include &lt;wx/button.h&gt;</template>
     <template name="evt_entry_OnButtonClick">EVT_BUTTON( $id, #handler )</template>
@@ -37,20 +62,8 @@ Written by
 
   <templates class="wxBitmapButton">
     <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, $bitmap, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, wxNullBitmap, $pos, $size, wxBU_AUTODRAW|$style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
     <template name="include">@#include &lt;wx/bmpbuttn.h&gt;</template>
-  	<template name="settings">
-  		#ifnotnull $disabled
-  		@{ #nl $name->SetBitmapDisabled( $disabled ); @}
-  		#ifnotnull $selected
-  		@{ #nl $name->SetBitmapSelected( $selected ); @}
-
-  		#ifnotnull $focus
-  		@{ #nl $name->SetBitmapFocus( $focus ); @}
-
-  		#ifnotnull $hover
-  		@{ #nl $name->SetBitmapHover( $hover ); @}
-  	</template>
   </templates>
 
   <templates class="wxTextCtrl">
@@ -87,7 +100,11 @@ Written by
     <template name="declaration">#class* $name;</template>
     <template name="include">@#include &lt;wx/stattext.h&gt;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );</template>
-  	<template name="settings">$name->Wrap( $wrap );</template>
+    <template name="settings">
+	    #ifequal $markup "1" @{
+		    $name->SetLabelMarkup( $label ); #nl
+	    @}
+	    $name->Wrap( $wrap );</template>
   </templates>
 
   <templates class="wxCheckBox">
@@ -357,6 +374,8 @@ Written by
 	<template name="evt_connect_OnCommandScrollThumbRelease">$name->Connect( wxEVT_SCROLL_THUMBRELEASE, #handler, NULL, this );</template>
 	<template name="evt_entry_OnCommandScrollChanged">EVT_COMMAND_SCROLL_CHANGED( $id, #handler )</template>
 	<template name="evt_connect_OnCommandScrollChanged">$name->Connect( wxEVT_SCROLL_CHANGED, #handler, NULL, this );</template>
+	<template name="evt_entry_OnSlider">EVT_SLIDER( $id, #handler )</template>
+	<template name="evt_connect_OnSlider">$name->Connect( wxEVT_SLIDER, #handler, NULL, this );</template>
   </templates>
 
 </codegen>

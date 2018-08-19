@@ -81,7 +81,7 @@
       <AdditionalIncludeDirectories>controls/include;boost;../src;../sdk/tinyxml;../sdk/plugin_interface;$(WXWIN)/include;$(WXWIN)/lib/vc_dll/mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>../sdk/lib/ticpp.lib;../sdk/lib/wxfb-plugin-interface.lib;wxbase31u.lib;wxmsw31u_core.lib;wxmsw31u_adv.lib;wxmsw31u_aui.lib;wxmsw31u_html.lib;wxmsw31u_stc.lib;wxmsw31u_propgrid.lib;wxmsw31u_xrc.lib;imagehlp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>../sdk/lib/ticpp.lib;../sdk/lib/wxfb-plugin-interface.lib;wxbase31u.lib;wxbase31u_net.lib;wxmsw31u_core.lib;wxmsw31u_adv.lib;wxmsw31u_aui.lib;wxmsw31u_html.lib;wxmsw31u_stc.lib;wxmsw31u_propgrid.lib;wxmsw31u_xrc.lib;imagehlp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)wxFormBuilder.exe</OutputFile>
       <AdditionalLibraryDirectories>..;../output;../sdk/lib;$(WXWIN)/lib/vc_dll;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -145,7 +145,7 @@
       <AdditionalIncludeDirectories>controls/include;boost;../src;../sdk/tinyxml;../sdk/plugin_interface;$(WXWIN)/include;$(WXWIN)/lib/vc_dll/mswud;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>../sdk/lib/ticppd.lib;../sdk/lib/wxfb-plugin-interfaced.lib;wxbase31ud.lib;wxmsw31ud_core.lib;wxmsw31ud_adv.lib;wxmsw31ud_aui.lib;wxmsw31ud_html.lib;wxmsw31ud_stc.lib;wxmsw31ud_propgrid.lib;wxmsw31ud_xrc.lib;imagehlp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>../sdk/lib/ticppd.lib;../sdk/lib/wxfb-plugin-interfaced.lib;wxbase31ud.lib;wxbase31ud_net.lib;wxmsw31ud_core.lib;wxmsw31ud_adv.lib;wxmsw31ud_aui.lib;wxmsw31ud_html.lib;wxmsw31ud_stc.lib;wxmsw31ud_propgrid.lib;wxmsw31ud_xrc.lib;imagehlp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)wxFormBuilderd.exe</OutputFile>
       <AdditionalLibraryDirectories>..;../output;../sdk/lib;$(WXWIN)/lib/vc_dll;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>

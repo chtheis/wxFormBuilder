@@ -205,7 +205,7 @@ namespace XMLUtils
 			return;
 		}
 	}
-};
+}
 
 void XMLUtils::LoadXMLFile( ticpp::Document& doc, bool condenseWhiteSpace, const wxString& path )
 {
@@ -383,11 +383,7 @@ void XMLUtils::ConvertAndChangeDeclaration( const wxString& path, const wxString
 		// declStart and declEnd are both valid, replace that section with a new declaration
 		contents.replace( declStart, declEnd - declStart + 2,
                             wxString::Format( wxT("<\?xml version=\"%s\" encoding=\"UTF-8\" standalone=\"%s\" \?>"),
-        #if wxVERSION_NUMBER < 2900
-                            version.c_str(), standalone.c_str() ).c_str() );
-        #else
                             version, standalone ) );
-        #endif
 	}
 
 	// Remove the old file

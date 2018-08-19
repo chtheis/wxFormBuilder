@@ -26,11 +26,8 @@
 #ifndef __APP_DATA__
 #define __APP_DATA__
 
-#include "utils/wxfbdefs.h"
-#include "model/database.h"
-#include "rad/cmdproc.h"
-#include <memory>
-#include <set>
+#include "../model/database.h"
+#include "cmdproc.h"
 
 namespace ticpp
 {

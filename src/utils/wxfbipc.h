@@ -60,11 +60,6 @@ private:
 
 public:
 	AppConnection(){}
-	~AppConnection(){}
-
-#if wxVERSION_NUMBER < 2900
-	wxChar* OnRequest( const wxString& topic, const wxString& item, int* size, wxIPCFormat format );
-#endif
 };
 
 // Server class, for listening to connection requests
@@ -82,7 +77,7 @@ class AppClient: public wxClient
 {
 public:
 	AppClient(){}
-	wxConnectionBase* OnMakeConnection();
+	wxConnectionBase* OnMakeConnection() override;
 };
 
 #endif //WXFBIPC_H

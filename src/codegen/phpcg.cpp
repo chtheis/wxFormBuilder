@@ -27,19 +27,18 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "phpcg.h"
+
 #include "codewriter.h"
-#include "utils/typeconv.h"
-#include "utils/debug.h"
-#include "rad/appdata.h"
-#include "model/objectbase.h"
-#include "model/database.h"
-#include "utils/wxfbexception.h"
+#include "../utils/typeconv.h"
+#include "../utils/debug.h"
+#include "../rad/appdata.h"
+#include "../model/objectbase.h"
+#include "../utils/wxfbexception.h"
 
 #include <algorithm>
 
 #include <wx/filename.h>
 #include <wx/tokenzr.h>
-#include <wx/defs.h>
 
 PHPTemplateParser::PHPTemplateParser( PObjectBase obj, wxString _template, bool useI18N, bool useRelativePath, wxString basePath )
 :
@@ -754,14 +753,23 @@ wxString PHPCodeGenerator::GetCode(PObjectBase obj, wxString name, bool silent)
 
 	_template = code_info->GetTemplate(name);
 
+	PObjectBase parent = obj->GetNonSizerParent();
+	if ( parent && ( parent->GetClassName() == wxT( "wxCollapsiblePane" ) ) )
+	{
+		wxString parentTemplate = wxT( "#wxparent $name" );
+		_template.Replace( parentTemplate, parentTemplate + wxT( "->GetPane()" ) );
+	}
+
 	PHPTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
 	wxString code = parser.ParseTemplate();
 
 	return code;
 }
 
-void PHPCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool use_enum, const wxString& classDecoration, const EventVector &events, const wxString& eventHandlerPostfix)
-{
+void PHPCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool /*use_enum*/,
+                                           const wxString& classDecoration,
+                                           const EventVector& events,
+                                           const wxString& eventHandlerPostfix) {
 	PProperty propName = class_obj->GetProperty( wxT("name") );
 	if ( !propName )
 	{
@@ -1083,10 +1091,17 @@ void PHPCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget )
 				// It's not a good practice to embed templates into the source code,
 				// because you will need to recompile...
 
-				wxString _template =	wxT("#wxparent $name->SetSizer( @$$name ); #nl")
-										wxT("#wxparent $name->Layout();")
-										wxT("#ifnull #parent $size")
-										wxT("@{ #nl @$$name->Fit( #wxparent $name ); @}");
+				wxString _template;
+				wxString parentPostfix;
+				if ( obj->GetParent()->GetClassName() == wxT( "wxCollapsiblePane" ) )
+					parentPostfix = "->GetPane()";
+				else
+					parentPostfix = wxEmptyString;
+
+				_template = wxT( "#wxparent $name" ) + parentPostfix + wxT( "->SetSizer( @$$name ); #nl" )
+					    wxT( "#wxparent $name" ) + parentPostfix + wxT( "->Layout();" )
+					    wxT( "#ifnull #parent $size" )
+					    wxT( "@{ #nl @$$name->Fit( #wxparent $name" ) + parentPostfix + wxT( " ); @}" );
 
 				PHPTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
 				m_source->WriteLn(parser.ParseTemplate());

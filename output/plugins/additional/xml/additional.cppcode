@@ -160,6 +160,8 @@ Written by
 	<template name="evt_connect_OnCalendar">$name->Connect( wxEVT_CALENDAR_DOUBLECLICKED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnCalendarSelChanged">EVT_CALENDAR_SEL_CHANGED( $id, #handler )</template>
 	<template name="evt_connect_OnCalendarSelChanged">$name->Connect( wxEVT_CALENDAR_SEL_CHANGED, #handler, NULL, this );</template>
+	<template name="evt_entry_OnCalendarPageChanged">EVT_CALENDAR_PAGE_CHANGED( $id, #handler )</template>
+	<template name="evt_connect_OnCalendarPageChanged">$name->Connect( wxEVT_CALENDAR_PAGE_CHANGED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnCalendarDay">EVT_CALENDAR_DAY( $id, #handler )</template>
 	<template name="evt_connect_OnCalendarDay">$name->Connect( wxEVT_CALENDAR_DAY_CHANGED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnCalendarMonth">EVT_CALENDAR_MONTH( $id, #handler )</template>
@@ -168,6 +170,8 @@ Written by
 	<template name="evt_connect_OnCalendarYear">$name->Connect( wxEVT_CALENDAR_YEAR_CHANGED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnCalendarWeekDayClicked">EVT_CALENDAR_WEEKDAY_CLICKED( $id, #handler )</template>
 	<template name="evt_connect_OnCalendarWeekDayClicked">$name->Connect( wxEVT_CALENDAR_WEEKDAY_CLICKED, #handler, NULL, this );</template>
+	<template name="evt_entry_OnCalendarWeekClicked">EVT_CALENDAR_WEEK_CLICKED( $id, #handler )</template>
+	<template name="evt_connect_OnCalendarWeekClicked">$name->Connect( wxEVT_CALENDAR_WEEK_CLICKED, #handler, NULL, this );</template>
   </templates>
 
   <templates class="wxScrollBar">
@@ -248,13 +252,18 @@ Written by
 	<template name="evt_connect_OnTextEnter">$name->Connect( wxEVT_COMMAND_TEXT_ENTER, #handler, NULL, this );</template>
   </templates>
 
-  <templates class="wxSpinCtrlDouble">
-    <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, $value, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @}, $min, $max, $initial, $inc #ifnotnull $window_name @{, $window_name @} );</template>
-    <template name="include">@#include &lt;wx/spinctrl.h&gt;</template>
-	<template name="evt_entry_OnSpinCtrlDouble">EVT_SPINCTRLDOUBLE( $id, #handler )</template>
-	<template name="evt_connect_OnSpinCtrlDouble">$name->Connect( wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, #handler, NULL, this );</template>
-  </templates>
+	<templates class="wxSpinCtrlDouble">
+		<template name="declaration">#class* $name;</template>
+		<template name="construction">$name = new #class( #wxparent $name, $id, $value, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @}, $min, $max, $initial, $inc #ifnotnull $window_name @{, $window_name @} );</template>
+		<template name="settings">$name->SetDigits( $digits );</template>
+		<template name="include">@#include &lt;wx/spinctrl.h&gt;</template>
+		<template name="evt_entry_OnSpinCtrlDouble">EVT_SPINCTRLDOUBLE( $id, #handler )</template>
+		<template name="evt_connect_OnSpinCtrlDouble">$name->Connect( wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, #handler, NULL, this );</template>
+		<template name="evt_entry_OnSpinCtrlText">EVT_TEXT( $id, #handler )</template>
+		<template name="evt_connect_OnSpinCtrlText">$name->Connect( wxEVT_COMMAND_TEXT_UPDATED, #handler, NULL, this );</template>
+		<template name="evt_entry_OnTextEnter">EVT_TEXT_ENTER( $id, #handler )</template>
+		<template name="evt_connect_OnTextEnter">$name->Connect( wxEVT_COMMAND_TEXT_ENTER, #handler, NULL, this );</template>
+	</templates>
 
   <templates class="wxSpinButton">
     <template name="declaration">#class* $name;</template>
@@ -293,6 +302,10 @@ Written by
     	#nl $name->ShowHidden( $show_hidden );
     </template>
     <template name="include">@#include &lt;wx/dirctrl.h&gt;</template>
+    <template name="evt_entry_OnDirctrlSelectionChanged">EVT_DIRCTRL_SELECTIONCHANGED( $id, #handler )</template>
+    <template name="evt_connect_OnDirctrlSelectionChanged">$name->Connect( wxEVT_DIRCTRL_SELECTIONCHANGED, #handler, NULL, this );</template>
+    <template name="evt_entry_OnDirctrlFileActivated">EVT_DIRCTRL_FILEACTIVATED( $id, #handler )</template>
+    <template name="evt_connect_OnDirctrlFileActivated">$name->Connect( wxEVT_DIRCTRL_FILEACTIVATED, #handler, NULL, this );</template>
   </templates>
 
   <templates class="wxSearchCtrl">

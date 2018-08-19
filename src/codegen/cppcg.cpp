@@ -24,21 +24,18 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "cppcg.h"
+
+#include "../model/objectbase.h"
+#include "../rad/appdata.h"
+#include "../utils/filetocarray.h"
+#include "../utils/typeconv.h"
+#include "../utils/wxfbexception.h"
 #include "codewriter.h"
-#include "utils/typeconv.h"
-#include "utils/debug.h"
-#include "rad/appdata.h"
-#include "model/objectbase.h"
-#include "model/database.h"
-#include "utils/wxfbexception.h"
-#include "utils/filetocarray.h"
 
 #include <algorithm>
 
-#include <wx/font.h>
 #include <wx/filename.h>
 #include <wx/tokenzr.h>
-#include <wx/defs.h>
 
 CppTemplateParser::CppTemplateParser( PObjectBase obj, wxString _template, bool useI18N, bool useRelativePath, wxString basePath )
 		:
@@ -196,7 +193,7 @@ wxString CppTemplateParser::ValueToCode( PropertyType type, wxString value )
 			}
 			else
 			{
-				result = "*wxNORMAL_FONT";
+				result = wxT("*wxNORMAL_FONT");
 			}
 			break;
 		}
@@ -856,8 +853,10 @@ void CppCodeGenerator::GenEvents( PObjectBase class_obj, const EventVector &even
 			wxString templateName = wxString::Format( wxT( "%s_%s" ), m_useConnect ? wxT( "connect" ) : wxT( "entry" ), event->GetName().c_str() );
 
 			PObjectBase obj = event->GetObject();
-			if ( !GenEventEntry( obj, obj->GetObjectInfo(), templateName, handlerName, disconnect ) )
-			{
+			if (!GenEventEntry(obj, obj->GetObjectInfo(), templateName, handlerName, disconnect) &&
+			    (!disconnect || event->GetName() != "OnMenuSelection")) {
+				// We don't bother with disconnecting OnMenuSelection events, that's why we skip the
+				// error message in that case.
 				wxLogError( wxT( "Missing \"evt_%s\" template for \"%s\" class. Review your XML object description" ),
 							templateName.c_str(), class_name.c_str() );
 			}
@@ -881,7 +880,9 @@ bool CppCodeGenerator::GenEventEntry( PObjectBase obj, PObjectInfo obj_info, con
 		if ( disconnect && _template.empty() )
 		{
 			_template = code_info->GetTemplate( wxT( "evt_" ) + templateName );
-			_template.Replace( wxT( "Connect" ), wxT( "Disconnect" ), true );
+			if (_template.Replace(wxT("Connect"), wxT("Disconnect"), true) == 0) {
+				_template.clear(); // "Connect" wasn't found, skip this entry
+			}
 		}
 
 		if ( !_template.empty() )
@@ -1082,6 +1083,13 @@ wxString CppCodeGenerator::GetCode( PObjectBase obj, wxString name )
 
 	_template = code_info->GetTemplate( name );
 
+	PObjectBase parent = obj->GetNonSizerParent();
+	if ( parent && ( parent->GetClassName() == wxT( "wxCollapsiblePane" ) ) )
+	{
+		wxString parentTemplate = wxT( "#wxparent $name" );
+		_template.Replace( parentTemplate, parentTemplate + wxT( "->GetPane()" ) );
+	}
+
 	CppTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
 	wxString code = parser.ParseTemplate();
 
@@ -1271,15 +1279,16 @@ void CppCodeGenerator::GenSubclassSets( PObjectBase obj, std::set< wxString >* s
 			// No name, so do nothing
 			return;
 		}
-		
+
 		//check if user wants to include the header or forward declare
 		bool forward_declare = true;
 		std::map< wxString, wxString >::iterator forward_declare_it = children.find( wxT( "forward_declare" ) );
 		if ( children.end() != forward_declare_it )
 		{
-			forward_declare = forward_declare_it->second == wxT( "forward_declare" );
+			// The value needs to be tested like ObjectInspector does
+			forward_declare = (forward_declare_it->second == forward_declare_it->first);
 		}
-		
+
 		//get namespaces
 		wxString originalValue = nameVal;
 		int delimiter = nameVal.Find( wxT( "::" ) ) ;
@@ -1575,6 +1584,7 @@ void CppCodeGenerator::GenConstruction( PObjectBase obj, bool is_widget )
 		}
 
 		m_source->WriteLn( GetCode( obj, wxT( "construction" ) ) );
+
 		GenSettings( obj->GetObjectInfo(), obj );
 
 		bool isWidget = !info->IsSubclassOf( wxT( "sizer" ) );
@@ -1606,10 +1616,17 @@ void CppCodeGenerator::GenConstruction( PObjectBase obj, bool is_widget )
 				// It's not a good practice to embed templates into the source code,
 				// because you will need to recompile...
 
-				wxString _template =	wxT( "#wxparent $name->SetSizer( $name ); #nl" )
-									 wxT( "#wxparent $name->Layout();" )
-									 wxT( "#ifnull #parent $size" )
-									 wxT( "@{ #nl $name->Fit( #wxparent $name ); @}" );
+				wxString _template;
+				wxString parentPostfix;
+				if ( obj->GetParent()->GetClassName() == wxT( "wxCollapsiblePane" ) )
+					parentPostfix = "->GetPane()";
+				else
+					parentPostfix = wxEmptyString;
+
+				_template = wxT( "#wxparent $name" ) + parentPostfix + wxT( "->SetSizer( $name ); #nl" )
+					    wxT( "#wxparent $name" ) + parentPostfix + wxT( "->Layout();" )
+					    wxT( "#ifnull #parent $size" )
+					    wxT( "@{ #nl $name->Fit( #wxparent $name" ) + parentPostfix + wxT( " ); @}" );
 
 				CppTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
 				m_source->WriteLn( parser.ParseTemplate() );

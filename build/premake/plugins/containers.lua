@@ -16,15 +16,16 @@ project "containers-components-plugin"
         "../../../sdk/tinyxml", "../../../sdk/plugin_interface"
     }
     defines             {"BUILD_DLL", "TIXML_USE_TICPP"}
-    flags               {"ExtraWarnings"}
     links               {"plugin-interface", "TiCPP"}
-    buildoptions        "-std=c++14"
 
     local libs = "std,richtext,propgrid,stc,ribbon,aui"
 
 	if wxArchitecture then
 		buildoptions	{"-arch " .. wxArchitecture}
 	end
+
+    configuration "not vs*"
+        buildoptions        "-std=c++14"
 
     configuration "not windows"
         targetdir       "../../../output/lib/wxformbuilder"
@@ -38,5 +39,7 @@ project "containers-components-plugin"
         wx_config       { Debug="yes", Libs=libs }
 
     configuration "Release"
-        buildoptions    {"-fno-strict-aliasing"}
         wx_config       { Libs=libs }
+
+    configuration {"not vs*", "Release"}
+        buildoptions    {"-fno-strict-aliasing"}

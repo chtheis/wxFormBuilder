@@ -19,13 +19,9 @@ solution "wxFormBuilder-Solution"
     local wxver         = string.gsub( wxVersion, '%.', '' )
     location            ( "../../build/" .. wxVersion .. "/" .. _ACTION )
     BuildDir            = solution().location
-	CustomPrefix        = "wx_" .. wxTarget .. wxUnicodeSign
-
-if wxVersion < "2.9" then
-    DebugSuffix         = "d-" .. wxver
-else
+    CustomPrefix        = "wx_" .. wxTarget .. wxUnicodeSign
     DebugSuffix         = "-" .. wxver
-end
+
     os.chdir( BuildDir )
 
 --if wxCompiler == "gcc" and os.is("windows") then
@@ -55,21 +51,22 @@ end
 		end
 
     configuration "Release"
-		-- if wxCompiler == "gcc" then
-		-- 	 linkoptions {"-s"}
+		-- if wxCompiler == "gcc" then
+		-- 	 linkoptions {"-s"}
 		-- end
         defines         {"NDEBUG"}
-        -- flags           {"OptimizeSpeed"}
+        flags           {"Optimize", "ExtraWarnings"}
+
+    configuration {"not vs*", "Debug"}
+        flags           {"ExtraWarnings"}
+
+    configuration {"vs*", "Debug"}
+        -- This produces D9025 because without ExtraWarnings /W3 gets set
+        --buildoptions    {"/W4"}
 
     dofile( scriptDir .. "/ticpp.lua" )
     dofile( scriptDir .. "/plugin-interface.lua" )
 
-if wxVersion < "2.9" then
-	dofile( scriptDir .. "/wxflatnotebook.lua" )
-    dofile( scriptDir .. "/wxpropgrid.lua" )
-    dofile( scriptDir .. "/wxscintilla.lua" )
-	dofile( scriptDir .. "/plugins/wxadditions-mini.lua" )
-end
     dofile( scriptDir .. "/plugins/additional.lua" )
     dofile( scriptDir .. "/plugins/common.lua" )
     dofile( scriptDir .. "/plugins/containers.lua" )

@@ -26,11 +26,7 @@
 #ifndef __TYPE_UTILS__
 #define __TYPE_UTILS__
 
-#include "wx/wx.h"
-#include <wx/string.h>
-#include <vector>
-#include <map>
-#include "model/types.h"
+#include "../model/types.h"
 #include "fontcontainer.h"
 
 // macros para la conversión entre wxString <-> wxString
@@ -64,8 +60,9 @@ namespace TypeConv
 
 	wxFontContainer StringToFont( const wxString &str );
 	wxString FontToString( const wxFontContainer &font );
-
-	wxString FontFamilyToString( int family );
+	wxString FontFamilyToString(wxFontFamily family);
+	wxString FontStyleToString(wxFontStyle style);
+	wxString FontWeightToString(wxFontWeight weight);
 
 	wxColour StringToColour( const wxString &str );
 	wxSystemColour StringToSystemColour( const wxString& str );
@@ -105,7 +102,7 @@ namespace TypeConv
 
 	double StringToFloat( const wxString& str );
 	wxString FloatToString( const double& val );
-};
+}
 
 
 // No me gusta nada tener que usar variables globales o singletons
