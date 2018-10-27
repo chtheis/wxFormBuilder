@@ -40,3 +40,6 @@ install/windows/*.exe
 /libforms.lib
 /liblayout.exp
 /liblayout.lib
+/_build/
+/_install/
+/compile_commands.json

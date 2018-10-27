@@ -306,6 +306,10 @@ wxString CppTemplateParser::ValueToCode( PropertyType type, wxString value )
 					result.Printf( wxT( "wxIcon( wxT(\"%s\"), wxBITMAP_TYPE_ICO_RESOURCE, %i, %i )" ), path.c_str(), icoSize.GetWidth(), icoSize.GetHeight() );
 				}
 			}
+			else if (source == _("Load From XRC"))
+			{
+				result << wxT("wxXmlResource::Get()->LoadBitmap( wxT(\"") << path << wxT("\") )");
+			}
 			else if ( source == _("Load From Art Provider") )
 			{
 				wxString rid = path.BeforeFirst( wxT(':') );
@@ -605,12 +609,7 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 		file = wxT( "noname" );
 	}
 
-	wxString guardMacro;
-	wxFileName::SplitPath( file, 0, &guardMacro, 0 );
-	guardMacro.Replace( wxT( " " ), wxT( "_" ) );
-	guardMacro.MakeUpper();
-	m_header->WriteLn( wxT( "#ifndef __" ) + guardMacro + wxT( "_H__" ) );
-	m_header->WriteLn( wxT( "#define __" ) + guardMacro + wxT( "_H__" ) );
+	m_header->WriteLn(wxT("#pragma once"));
 	m_header->WriteLn( wxT( "" ) );
 
 	code = GetCode( project, wxT( "header_preamble" ) );
@@ -787,8 +786,6 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 		}
 		m_header->WriteLn( wxEmptyString );
 	}
-
-	m_header->WriteLn( wxT( "#endif //__" ) + guardMacro + wxT( "_H__" ) );
 
 	return true;
 }
@@ -2020,6 +2017,12 @@ void CppCodeGenerator::FindEmbeddedBitmapProperties( PObjectBase obj, std::set<w
 				inc << wxT( "#include \"" ) << includePath << wxT( "\"" );
 				embedset.insert( inc );
 			}
+			// NOTE: This is currently not necessary because the default code already contains this header.
+			//       Because the unique include filtering is not global this cannot be enabled without creating a duplicate entry.
+			//else if (source == _("Load From XRC"))
+			//{
+			//	embedset.insert(wxT("#include <wx/xrc/xmlres.h>"));
+			//}
 		}
 	}
 
