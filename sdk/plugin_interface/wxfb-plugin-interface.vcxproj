@@ -163,12 +163,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ProjectReference Include="F:/Programme/wxFormbuilder/x32/ZERO_CHECK.vcxproj">
-      <Project>82FF043F-D185-3C0F-AA4F-3D6EE78CA697</Project>
-    </ProjectReference>
-    <ProjectReference Include="F:/Programme/wxFormbuilder/x32/ticpp-8c7e691e56f9a0e2ad483b01dcd3e64b1b3de276/ticpp-8c7e691e56f9a0e2ad483b01dcd3e64b1b3de276/ticpp.vcxproj">
-      <Project>F4C66AAE-0480-334C-AF3C-90E6C19FFFE9</Project>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="forms\wizard.cpp" />
