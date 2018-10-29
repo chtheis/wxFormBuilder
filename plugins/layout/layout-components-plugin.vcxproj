@@ -65,7 +65,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
-      <AdditionalIncludeDirectories>../../sdk/tinyxml;../../sdk/plugin_interface;$(WXWIN)/include;$(WXWIN)/lib/vc_dll/mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../subprojects/ticpp;../../sdk/plugin_interface;$(WXWIN)/include;$(WXWIN)/lib/vc_dll/mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>BUILD_DLL;TIXML_USE_TICPP;WXUSINGDLL;_CRT_SECURE_NO_WARNINGS;UNICODE;_UNICODE;__WX__;__WXMSW__;WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -80,7 +80,7 @@
       <AdditionalIncludeDirectories>../../sdk/tinyxml;../../sdk/plugin_interface;$(WXWIN)/include;$(WXWIN)/lib/vc_dll/mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>../../sdk/lib/wxfb-plugin-interface.lib;../../sdk/lib/ticpp.lib;wxbase31u.lib;wxmsw31u_core.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>../../sdk/lib/wxfb-plugin-interface.lib;../../subprojects/lib/ticpp.lib;wxbase31u.lib;wxmsw31u_core.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)liblayout.dll</OutputFile>
       <AdditionalLibraryDirectories>../..;$(WXWIN)/lib/vc_dll;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -95,7 +95,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Noopt|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../../sdk/tinyxml;../../sdk/plugin_interface;$(WXWIN)/include;$(WXWIN)/lib/vc_dll/mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../subprojects/ticpp;../../sdk/plugin_interface;$(WXWIN)/include;$(WXWIN)/lib/vc_dll/mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>BUILD_DLL;TIXML_USE_TICPP;WXUSINGDLL;_CRT_SECURE_NO_WARNINGS;UNICODE;_UNICODE;__WX__;__WXMSW__;WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -110,7 +110,7 @@
       <AdditionalIncludeDirectories>../../sdk/tinyxml;../../sdk/plugin_interface;$(WXWIN)/include;$(WXWIN)/lib/vc_dll/mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>../../sdk/lib/wxfb-plugin-interface.lib;../../sdk/lib/ticpp.lib;wxbase31u.lib;wxmsw31u_core.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>../../sdk/lib/wxfb-plugin-interface.lib;../../subprojects/lib/ticpp.lib;wxbase31u.lib;wxmsw31u_core.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)liblayout.dll</OutputFile>
       <AdditionalLibraryDirectories>../..;$(WXWIN)/lib/vc_dll;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -125,7 +125,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../../sdk/tinyxml;../../sdk/plugin_interface;$(WXWIN)/include;$(WXWIN)/lib/vc_dll/mswud;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../subprojects/ticpp;../../sdk/plugin_interface;$(WXWIN)/include;$(WXWIN)/lib/vc_dll/mswud;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>BUILD_DLL;TIXML_USE_TICPP;WXUSINGDLL;_CRT_SECURE_NO_WARNINGS;UNICODE;_UNICODE;__WX__;__WXMSW__;WIN32;_WINDOWS;DEBUG;_DEBUG;__WXDEBUG__;__WXFB_DEBUG__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -141,7 +141,7 @@
       <AdditionalIncludeDirectories>../../sdk/tinyxml;../../sdk/plugin_interface;$(WXWIN)/include;$(WXWIN)/lib/vc_dll/mswud;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>../../sdk/lib/wxfb-plugin-interfaced.lib;../../sdk/lib/ticppd.lib;wxbase31ud.lib;wxmsw31ud_core.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>../../sdk/lib/wxfb-plugin-interfaced.lib;../../subprojects/lib/ticppd.lib;wxbase31ud.lib;wxmsw31ud_core.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)liblayoutd.dll</OutputFile>
       <AdditionalLibraryDirectories>../..;$(WXWIN)/lib/vc_dll;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
