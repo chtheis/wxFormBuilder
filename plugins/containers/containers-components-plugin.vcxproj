@@ -53,7 +53,7 @@
   <PropertyGroup>
     <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../../output/plugins/containers/</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Noopt|Win32'">../../output/plugins/containers</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Noopt|Win32'">../../output/plugins/containers/</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.objsu/</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Noopt|Win32'">.objsu\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>

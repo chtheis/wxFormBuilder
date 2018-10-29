@@ -112,7 +112,7 @@
       <AdditionalIncludeDirectories>controls/include;boost;../src;../sdk/tinyxml;../sdk/plugin_interface;$(WXWIN)/include;$(WXWIN)/lib/vc_dll/mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>../subprojects/lib/ticpp.lib;../sdk/lib/wxfb-plugin-interface.lib;wxbase31u.lib;wxmsw31u_core.lib;wxmsw31u_adv.lib;wxmsw31u_aui.lib;wxmsw31u_html.lib;wxmsw31u_stc.lib;wxmsw31u_propgrid.lib;wxmsw31u_xrc.lib;imagehlp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>../subprojects/lib/ticpp.lib;../sdk/lib/wxfb-plugin-interface.lib;wxbase31u.lib;wxmsw31u_core.lib;wxbase31u_net.lib;wxmsw31u_adv.lib;wxmsw31u_aui.lib;wxmsw31u_html.lib;wxmsw31u_stc.lib;wxmsw31u_propgrid.lib;wxmsw31u_xrc.lib;imagehlp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)wxFormBuilder.exe</OutputFile>
       <AdditionalLibraryDirectories>..;../output;../sdk/lib;$(WXWIN)/lib/vc_dll;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
