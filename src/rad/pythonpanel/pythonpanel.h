@@ -21,7 +21,7 @@
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
-// Python code generation writen by
+// Python code generation written by
 //   Michal Bližňak - michal.bliznak@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
@@ -61,6 +61,10 @@ private:
 public:
 	PythonPanel( wxWindow *parent, int id );
 	~PythonPanel() override;
+	PythonPanel(const PythonPanel&) = delete;
+	PythonPanel& operator=(const PythonPanel&) = delete;
+	PythonPanel(PythonPanel&&) = delete;
+	PythonPanel& operator=(PythonPanel&&) = delete;
 
 	void OnPropertyModified( wxFBPropertyEvent& event );
 	void OnProjectRefresh( wxFBEvent& event );

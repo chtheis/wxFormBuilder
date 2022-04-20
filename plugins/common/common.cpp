@@ -23,6 +23,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
+#include  <unordered_map>
+
 #include <plugin.h>
 #include <ticpp.h>
 #include <xrcconv.h>
@@ -100,6 +102,15 @@ public:
 		m_manager = manager;
 	}
 
+	void SetObject(int index, wxObject* pObject)
+	{
+		m_aObjects[index] = pObject;
+	}
+	wxObject* GetObject(int index)
+	{
+		return m_aObjects[index];
+	}
+
 protected:
 	IManager* m_manager;
 
@@ -109,6 +120,9 @@ protected:
 	void OnTool( wxCommandEvent& event );
 
 	DECLARE_EVENT_TABLE()
+
+private:
+	std::unordered_map<int, wxObject*> m_aObjects;
 };
 
 BEGIN_EVENT_TABLE( AuiToolBar, wxAuiToolBar )
@@ -198,6 +212,10 @@ public:
 			button->SetDefault();
 		}
 
+		if (obj->GetPropertyAsInteger(_("auth_needed")) != 0) {
+			button->SetAuthNeeded();
+		}
+
 		if (!obj->IsNull(_("bitmap"))) {
 			button->SetBitmap(obj->GetPropertyAsBitmap(_("bitmap")));
 		}
@@ -236,6 +254,7 @@ public:
 		xrc.AddWindowProperties();
 		xrc.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
 		xrc.AddProperty(_("default"),_("default"),XRC_TYPE_BOOL);
+		xrc.AddProperty(_("auth_needed"), _("auth_needed"), XRC_TYPE_BOOL);
 		xrc.AddProperty(_("markup"), _("markup"), XRC_TYPE_BOOL);
 		xrc.AddProperty(_("bitmap"), _("bitmap"), XRC_TYPE_BITMAP);
 		if (!obj->IsNull(_("disabled"))) {
@@ -264,6 +283,7 @@ public:
 		filter.AddWindowProperties();
 		filter.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
 		filter.AddProperty(_("default"),_("default"),XRC_TYPE_BOOL);
+		filter.AddProperty(_("auth_needed"), _("auth_needed"), XRC_TYPE_BOOL);
 		filter.AddProperty(_("markup"), _("markup"), XRC_TYPE_BOOL);
 		filter.AddProperty(_("bitmap"), _("bitmap"), XRC_TYPE_BITMAP);
 		filter.AddProperty(_("disabled"), _("disabled"), XRC_TYPE_BITMAP);
@@ -298,7 +318,11 @@ public:
 			button->SetDefault();
 		}
 
-		if ( !obj->IsNull( _("disabled") ) )
+		if (obj->GetPropertyAsInteger(_("auth_needed")) != 0) {
+			button->SetAuthNeeded();
+		}
+
+		if (!obj->IsNull(_("disabled")))
 		{
 			button->SetBitmapDisabled( obj->GetPropertyAsBitmap( _("disabled") ) );
 		}
@@ -354,6 +378,7 @@ public:
 			xrc.AddProperty(_("margins"), _("margins"), XRC_TYPE_SIZE);
 		}
 		xrc.AddProperty(_("default"),_("default"),XRC_TYPE_BOOL);
+		xrc.AddProperty(_("auth_needed"), _("auth_needed"), XRC_TYPE_BOOL);
 		return xrc.GetXrcObject();
 	}
 
@@ -368,6 +393,7 @@ public:
 		filter.AddProperty(_("position"), _("position"), XRC_TYPE_TEXT);
 		filter.AddProperty(_("margins"), _("margins"), XRC_TYPE_SIZE);
 		filter.AddProperty(_("default"),_("default"),XRC_TYPE_BOOL);
+		filter.AddProperty(_("auth_needed"), _("auth_needed"), XRC_TYPE_BOOL);
 		return filter.GetXfbObject();
 	}
 };
@@ -949,13 +975,11 @@ public:
 
 	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxMenuBar"), obj->GetPropertyAsString(_("name")));
-		xrc.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
 		return xrc.GetXrcObject();
 	}
 
 	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxMenuBar"));
-		filter.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
 		return filter.GetXfbObject();
 	}
 };
@@ -1249,9 +1273,9 @@ void AuiToolBar::OnDropDownMenu( wxAuiToolBarEvent& event )
 
 		if ( item && item->HasDropDown() )
 		{
-			wxObject* wxobject = (wxObject*) item->GetUserData();
+			wxObject* wxobject = GetObject(item->GetUserData());
 
-			if ( NULL != wxobject )
+			if (wxobject)
 			{
 				m_manager->SelectObject( wxobject );
 			}
@@ -1286,11 +1310,15 @@ void AuiToolBar::OnTool( wxCommandEvent& event )
 		return;
 	}
 
-	wxObject* wxobject = (wxObject*) tb->FindTool( event.GetId() )->GetUserData();
-
-	if ( NULL != wxobject )
+	wxAuiToolBarItem* item = tb->FindTool(event.GetId());
+	if (item)
 	{
-		m_manager->SelectObject( wxobject );
+		wxObject* wxobject = GetObject(item->GetUserData());
+
+		if (wxobject)
+		{
+			m_manager->SelectObject(wxobject);
+		}
 	}
 }
 
@@ -1342,7 +1370,9 @@ public:
 								child
 							);
 				wxAuiToolBarItem* itm = tb->FindToolByIndex( i );
-				itm->SetUserData( (long) child );
+				wxASSERT(itm);
+				itm->SetUserData(i);
+				tb->SetObject(i, child);
 				if ( childObj->GetPropertyAsInteger(_("context_menu") ) == 1 && !itm->HasDropDown() )
 					tb->SetToolDropDown( itm->GetId(), true );
 				else if ( childObj->GetPropertyAsInteger(_("context_menu") ) == 0 && itm->HasDropDown() )

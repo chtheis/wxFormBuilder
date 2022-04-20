@@ -21,11 +21,12 @@ Written by
   José Antonio Hurtado - joseantonio.hurtado@gmail.com
   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 
-PHP code generation writen by
+PHP code generation written by
   Jefferson González - jgmdev@gmail.com
 -->
 <codegen language="PHP">
-  	<templates class="wxRibbonBar">
+
+	<templates class="wxRibbonBar">
 		<template name="declaration">#class* $name;</template>
 		<template name="construction">
 			@/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
@@ -62,7 +63,7 @@ PHP code generation writen by
 		</template>
 		<template name="evt_connect_OnRibbonPanelExtbuttonActivated">// event wxEVT_COMMAND_RIBBONPANEL_EXTBUTTON_ACTIVATED  isn't currently supported by wxPHP</template>
 	</templates>
- 
+
 	<templates class="wxRibbonButtonBar">
 		<template name="declaration">wxRibbonButtonBar* $name;</template>		
 		<template name="construction">

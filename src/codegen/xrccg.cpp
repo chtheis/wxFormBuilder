@@ -46,8 +46,8 @@ bool XrcCodeGenerator::GenerateCode( PObjectBase project )
 	doc.LinkEndChild( &decl );
 
 	ticpp::Element element( "resource" );
-	element.SetAttribute( "xmlns", "http://www.wxwindows.org/wxxrc" );
-	element.SetAttribute( "version", "2.3.0.1" );
+	element.SetAttribute("xmlns", "http://www.wxwidgets.org/wxxrc");
+	element.SetAttribute("version", "2.5.3.0");
 
 	// If project is not actually a "Project", generate it
 	if ( project->GetClassName() == wxT("Project") )
@@ -172,37 +172,39 @@ ticpp::Element* XrcCodeGenerator::GetElement( PObjectBase obj, ticpp::Element* p
 		}
 		else if( class_name == "wxMenu" )
 		{
-			// Do not generate context menus assigned to forms or widgets
-			std::string parent_name = parent->GetAttribute( "class" );
-			if( (parent_name != "wxMenuBar") && (parent_name != "wxMenu") )
-			{
-				// insert context menu into vector for delayed processing (context menus will be generated as top-level menus)
-				for ( unsigned int i = 0; i < obj->GetChildCount(); i++ )
-				{
-					ticpp::Element *aux = GetElement( obj->GetChild( i ), element );
-					if ( aux )
-					{
-						element->LinkEndChild( aux );
-						delete aux;
+			if (parent) {
+				// Do not generate context menus assigned to forms or widgets
+				std::string parent_name = parent->GetAttribute("class");
+				if ((parent_name != "wxMenuBar") && (parent_name != "wxMenu")) {
+					// insert context menu into vector for delayed processing (context menus will be
+					// generated as top-level menus)
+					for (unsigned int i = 0; i < obj->GetChildCount(); i++) {
+						ticpp::Element* aux = GetElement(obj->GetChild(i), element);
+						if (aux) {
+							element->LinkEndChild(aux);
+							delete aux;
+						}
 					}
-				}
 
-				m_contextMenus.push_back( element );
-				return NULL;
+					m_contextMenus.push_back(element);
+					return nullptr;
+				}
 			}
 		}
 		else if ( class_name == "wxCollapsiblePane" )
 		{
-			ticpp::Element *aux = new ticpp::Element( "object" );
-			aux->SetAttribute( "class", "panewindow" );
+			if (obj->GetChildCount() > 0) {
+				ticpp::Element *aux = new ticpp::Element( "object" );
+				aux->SetAttribute( "class", "panewindow" );
 
-			ticpp::Element *child = GetElement( obj->GetChild( 0 ), aux );
+				ticpp::Element *child = GetElement( obj->GetChild( 0 ), aux );
 
-			aux->LinkEndChild( child );
-			element->LinkEndChild( aux );
+				aux->LinkEndChild( child );
+				element->LinkEndChild( aux );
 
-			delete aux;
-			delete child;
+				delete aux;
+				delete child;
+			}
 
 			return element;
 		}

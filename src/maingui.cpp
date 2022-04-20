@@ -26,6 +26,8 @@
 
 #include "model/objectbase.h"
 #include "rad/appdata.h"
+#include "rad/revision.h"
+#include "rad/version.h"
 #include "rad/mainframe.h"
 #include "utils/typeconv.h"
 #include "utils/wxfbexception.h"
@@ -88,12 +90,19 @@ int MyApp::OnRun()
 	#if wxUSE_ON_FATAL_EXCEPTION && wxUSE_STACKWALKER
 		::wxHandleFatalExceptions( true );
 	#elif defined(_WIN32) && defined(__MINGW32__)
-		// Structured Exception handlers are stored in a linked list at FS:[0]
-		// THIS MUST BE A LOCAL VARIABLE - windows won't use an object outside of the thread's stack frame
-		EXCEPTION_REGISTRATION ex;
-		ex.handler = StructuredExceptionHandler;
-		asm volatile ("movl %%fs:0, %0" : "=r" (ex.prev));
-		asm volatile ("movl %0, %%fs:0" : : "r" (&ex));
+        // Structured Exception handlers are stored in a linked list at FS:[0] for 32-bit and GS:[0] for 64-bit
+        // https://github.com/wine-mirror/wine/blob/1aff1e6a370ee8c0213a0fd4b220d121da8527aa/include/winternl.h#L347
+        // THIS MUST BE A LOCAL VARIABLE - windows won't use an object outside of the thread's stack frame
+        EXCEPTION_REGISTRATION ex;
+        ex.handler = StructuredExceptionHandler;
+
+        #if defined(__amd64__) || defined(__x86_64__) // 64-bit
+            asm volatile ("movq %%gs:0, %0" : "=r" (ex.prev));
+            asm volatile ("movq %0, %%gs:0" : : "r" (&ex));
+        #elif defined(__i386__) || defined(_X86_) // 32-bit
+            asm volatile ("movl %%fs:0, %0" : "=r" (ex.prev));
+            asm volatile ("movl %0, %%fs:0" : : "r" (&ex));
+        #endif
 	#endif
 
 	// Using a space so the initial 'w' will not be capitalized in wxLogGUI dialogs
@@ -104,7 +113,12 @@ int MyApp::OnRun()
 	delete wxConfigBase::Set( new wxConfig( wxT("wxFormBuilder") ) );
 
 	// Get the data directory
-	wxStandardPathsBase& stdPaths = wxStandardPaths::Get();
+	auto& stdPaths = wxStandardPaths::Get();
+	#if defined(__WINDOWS__)
+	// The CMake stage build roots the whole directory structure at the build directory
+	// so don't ignore that one
+	stdPaths.DontIgnoreAppSubDir();
+	#endif
 	wxString dataDir = stdPaths.GetDataDir();
 	dataDir.Replace( GetAppName().c_str(), wxT("wxformbuilder") );
 
@@ -122,7 +136,7 @@ int MyApp::OnRun()
 	}
 
 	if (parser.Found("v")) {
-		std::cout << "wxFormBuilder " << VERSION << std::endl;
+		std::cout << "wxFormBuilder " << getVersion() << getPostfixRevision(getVersion()) << std::endl;
 		return EXIT_SUCCESS;
 	}
 
@@ -267,7 +281,7 @@ int MyApp::OnRun()
 
 	// This is not necessary for wxFB to work. However, Windows sets the Current Working Directory
 	// to the directory from which a .fbp file was opened, if opened from Windows Explorer.
-	// This puts an unneccessary lock on the directory.
+	// This puts an unnecessary lock on the directory.
 	// This changes the CWD to the already locked app directory as a workaround
 	#ifdef __WXMSW__
 	::wxSetWorkingDirectory( dataDir );

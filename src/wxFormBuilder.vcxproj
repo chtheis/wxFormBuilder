@@ -200,7 +200,6 @@
     <ClCompile Include="rad\wxfbevent.cpp" />
     <ClCompile Include="rad\wxfbmanager.cpp" />
     <ClCompile Include="utils\annoyingdialog.cpp" />
-    <ClCompile Include="utils\encodingutils.cpp" />
     <ClCompile Include="utils\filetocarray.cpp" />
     <ClCompile Include="utils\stringutils.cpp" />
     <ClCompile Include="utils\typeconv.cpp" />
@@ -255,7 +254,6 @@
     <ClInclude Include="rad\wxfbmanager.h" />
     <ClInclude Include="utils\annoyingdialog.h" />
     <ClInclude Include="utils\debug.h" />
-    <ClInclude Include="utils\encodingutils.h" />
     <ClInclude Include="utils\filetocarray.h" />
     <ClInclude Include="utils\stringutils.h" />
     <ClInclude Include="utils\typeconv.h" />

@@ -198,9 +198,6 @@
     <ClCompile Include="utils\annoyingdialog.cpp">
       <Filter>utils</Filter>
     </ClCompile>
-    <ClCompile Include="utils\encodingutils.cpp">
-      <Filter>utils</Filter>
-    </ClCompile>
     <ClCompile Include="utils\filetocarray.cpp">
       <Filter>utils</Filter>
     </ClCompile>
@@ -355,9 +352,6 @@
       <Filter>utils</Filter>
     </ClInclude>
     <ClInclude Include="utils\debug.h">
-      <Filter>utils</Filter>
-    </ClInclude>
-    <ClInclude Include="utils\encodingutils.h">
       <Filter>utils</Filter>
     </ClInclude>
     <ClInclude Include="utils\filetocarray.h">

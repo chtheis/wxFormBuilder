@@ -2,12 +2,13 @@
 
 #include "../utils/debug.h"
 
+#include <unordered_map>
 #include <wx/textfile.h>
 #include <wx/msgdlg.h>
 
 wxString RemoveWhiteSpace(wxString str);
 
-/** Stores all of the information for all of the parsed funtions */
+/** Stores all of the information for all of the parsed functions */
 class Function {
 public:
 	Function() {
@@ -58,7 +59,7 @@ protected:
 };
 
 /** map class mapping Function* to function name */
-WX_DECLARE_STRING_HASH_MAP(Function*, FunctionMap);
+using FunctionMap = std::unordered_map<std::string, Function*>;
 #define funcIterator FunctionMap::iterator
 
 /** parses the source and header files for all code added to the generated */

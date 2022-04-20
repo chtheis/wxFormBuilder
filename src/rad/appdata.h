@@ -31,6 +31,7 @@
 
 namespace ticpp
 {
+class Document;
 
 class Node;
 
@@ -64,6 +65,8 @@ class ApplicationData
 		bool m_modFlag;           // flag de proyecto modificado
 
 		bool m_warnOnAdditionsUpdate;	// flag to warn on additions update / class renames
+
+		bool m_darkMode;
 
 		PObjectDatabase m_objDb;  // Base de datos de objetos
 
@@ -206,13 +209,13 @@ class ApplicationData
 		Transfers @a options from the text of @a prop to the text of @a newPropName, which will be created if it doesn't exist.
 		@param prop Property containing the options to transfer.
 		@param options Set of options to search for and transfer.
-		@param newPropName Name of property to transfer to, will be created if non-existant.
+		@param newPropName Name of property to transfer to, will be created if non-existent.
 		*/
 		void TransferOptionList( ticpp::Element* prop, std::set< wxString >* options, const std::string& newPropName );
 
 		void PropagateExpansion(PObjectBase obj, bool expand, bool up);
 
-		// hiden constructor
+		// hidden constructor
 		ApplicationData( const wxString &rootdir = wxT( "." ) );
 
 		/**
@@ -225,11 +228,15 @@ class ApplicationData
 		#endif
 
 		typedef std::map< std::string, std::set< std::string > > PropertiesToRemove;
-		PropertiesToRemove& GetPropertiesToRemove_v1_12( void ) const;
+		PropertiesToRemove& GetPropertiesToRemove_v1_12() const;
 
 	public:
 
 		~ApplicationData();
+		ApplicationData(const ApplicationData&) = delete;
+		ApplicationData& operator=(const ApplicationData&) = delete;
+		ApplicationData(ApplicationData&&) = delete;
+		ApplicationData& operator=(ApplicationData&&) = delete;
 
 		#ifdef __WXFB_DEBUG__
 		wxLog* GetDebugLogTarget(){ return m_debugLogTarget; }
@@ -267,7 +274,8 @@ class ApplicationData
 		@param fileMinor The minor revision of the file
 		@return true if successful, false otherwise
 		*/
-		bool ConvertProject( const wxString& path, int fileMajor, int fileMinor );
+
+		bool ConvertProject(ticpp::Document& doc, const wxString& path, int fileMajor, int fileMinor);
 
 		/**
 		Recursive function used to convert the object tree in the project file to the latest version.
@@ -348,6 +356,9 @@ class ApplicationData
 		bool CanCopyObject();
 		bool IsModified();
 
+		void SetDarkMode(bool darkMode);
+		bool IsDarkMode() const;
+
 		PObjectPackage GetPackage( unsigned int idx )
 		{ return m_objDb->GetPackage( idx );}
 
@@ -370,7 +381,7 @@ class ApplicationData
 		const int m_fbpVerMinor;
 
 		/** Path to the fbp file that is opened. */
-		const wxString &GetProjectPath() { return m_projectPath; };
+		const wxString &GetProjectPath() { return m_projectPath; }
 
 
 		/**
@@ -383,11 +394,11 @@ class ApplicationData
 		*/
 		wxString GetEmbeddedFilesOutputPath();
 
-		void SetProjectPath( const wxString &path ) { m_projectPath = path; };
+		void SetProjectPath( const wxString &path ) { m_projectPath = path; }
 
-		const wxString &GetApplicationPath() { return m_rootDir; };
+		const wxString &GetApplicationPath() { return m_rootDir; }
 
-		void SetApplicationPath( const wxString &path ) { m_rootDir = path; };
+		void SetApplicationPath( const wxString &path ) { m_rootDir = path; }
 
 		// Allow a single instance check from outsid the AppData class
 		bool VerifySingleInstance( const wxString& file, bool switchTo = true );

@@ -13,6 +13,7 @@ add_project_arguments(cxx.get_supported_arguments([
 	'-Wduplicated-branches',
 	'-Wno-overloaded-virtual',
 	'-Wtautological-compare',
+	'-Wextra-semi',
 	'-Wno-inconsistent-missing-override',
 	'-Wno-ignored-qualifiers',
 	'-Wno-unused-parameter',
@@ -29,13 +30,18 @@ endif
 wx_dep = dependency('wxwidgets', version : '>=3.0.3',
                     modules : ['std', 'stc', 'propgrid', 'aui', 'ribbon', 'richtext'])
 
+media_dep = dependency('wxwidgets', version : '>=3.0.3', modules : ['media'], required : false)
+if media_dep.found()
+	add_project_arguments('-DUSE_MEDIACTRL', language : 'cpp')
+endif
+
 inc = include_directories(['sdk/plugin_interface'])
 ticpp_dep = subproject('ticpp').get_variable('ticpp_dep')
 
 plugin_interface = static_library('plugin_interface', [
 		'sdk/plugin_interface/xrcconv.cpp',
 		'sdk/plugin_interface/forms/wizard.cpp',
-	], dependencies : [ticpp_dep, wx_dep])
+	], dependencies : [ticpp_dep, wx_dep, media_dep])
 
 executable('wxformbuilder', [
 		'src/codegen/codegen.cpp',
@@ -80,13 +86,13 @@ executable('wxformbuilder', [
 		'src/rad/xrcpanel/xrcpanel.cpp',
 		'src/rad/xrcpreview/xrcpreview.cpp',
 		'src/utils/annoyingdialog.cpp',
-		'src/utils/encodingutils.cpp',
 		'src/utils/filetocarray.cpp',
+		'src/utils/m_wxfb.cpp',
 		'src/utils/stringutils.cpp',
 		'src/utils/typeconv.cpp',
 		'src/utils/typeconv.cpp',
 		'src/utils/wxfbipc.cpp',
-	], dependencies : [ticpp_dep, wx_dep], include_directories : inc,
+	], dependencies : [ticpp_dep, wx_dep, media_dep], include_directories : inc,
 	link_with : plugin_interface, install : true)
 
 foreach plugin : ['common', 'containers', 'forms', 'layout', 'additional']

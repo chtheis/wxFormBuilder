@@ -250,7 +250,7 @@ wxPGProperty* ObjectInspector::GetProperty( PProperty prop )
 	}
 	else if (type == PT_TEXT)
 	{
-		result = new wxLongStringProperty( name, wxPG_LABEL, prop->GetValueAsString() );
+		result = new wxLongStringProperty( name, wxPG_LABEL, prop->GetValueAsText() );
 	}
 	else if (type == PT_BOOL)
 	{
@@ -290,9 +290,9 @@ wxPGProperty* ObjectInspector::GetProperty( PProperty prop )
 			}
 		}
 	}
-	else if (type == PT_INTLIST || type == PT_UINTLIST)
+	else if (type == PT_INTLIST || type == PT_UINTLIST || type == PT_INTPAIRLIST || type == PT_UINTPAIRLIST)
 	{
-		result = new wxStringProperty( name, wxPG_LABEL, IntList( prop->GetValueAsString(), type == PT_UINTLIST ).ToString() );
+		result = new wxStringProperty(name, wxPG_LABEL, IntList(prop->GetValueAsString(), type == PT_UINTLIST, (PT_INTPAIRLIST == type || PT_UINTPAIRLIST == type)).ToString(true));
 	}
 	else if (type == PT_OPTION || type == PT_EDIT_OPTION)
 	{
@@ -492,7 +492,12 @@ void ObjectInspector::AddItems( const wxString& name, PObjectBase obj,
 							// Because the format of a composed wxPGProperty value is stored this needs to be converted
 							// true == "<property name>"
 							// false == "Not <property name>"
-							child = new wxBoolProperty(it->m_name, wxPG_LABEL, value == it->m_name);
+							// TODO: The subclass property is currently the only one using this child type,
+							//       because the only instance using this property, the c++ code generator,
+							//       interprets a missing value as true and currently no project file update
+							//       adds this value if it is missing, here a missing value also needs to be
+							//       interpreted as true
+							child = new wxBoolProperty(it->m_name, wxPG_LABEL, value.empty() || value == it->m_name);
 						}
 						else if( PT_WXSTRING == it->m_type )
 						{
@@ -522,12 +527,24 @@ void ObjectInspector::AddItems( const wxString& name, PObjectBase obj,
 			if (m_style != wxFB_OI_MULTIPAGE_STYLE)
 			{
 				// Most common classes will be showed with a slightly different colour.
-				if (name == wxT("wxWindow"))
-					m_pg->SetPropertyBackgroundColour(id,wxColour(255,255,205)); // yellow
-				else if (name == wxT("AUI"))
-					m_pg->SetPropertyBackgroundColour(id,wxColour(240,240,255)); // light blue
-				else if (name == wxT("sizeritem") || name == wxT("gbsizeritem") || name == wxT("sizeritembase") )
-					m_pg->SetPropertyBackgroundColour(id,wxColour(220,255,255)); // cyan
+				if (!AppData()->IsDarkMode())
+				{
+					if (name == wxT("wxWindow"))
+						m_pg->SetPropertyBackgroundColour(id,wxColour(255,255,205)); // yellow
+					else if (name == wxT("AUI"))
+						m_pg->SetPropertyBackgroundColour(id,wxColour(240,240,255)); // light blue
+					else if (name == wxT("sizeritem") || name == wxT("gbsizeritem") || name == wxT("sizeritembase"))
+						m_pg->SetPropertyBackgroundColour(id,wxColour(220,255,255)); // cyan
+				}
+				else
+				{
+					if (name == wxT("wxWindow"))
+						m_pg->SetPropertyBackgroundColour(id,wxColour(127,127,51)); // dark yellow
+					else if (name == wxT("AUI"))
+						m_pg->SetPropertyBackgroundColour(id,wxColour(76,76,153)); // dark blue
+					else if (name == wxT("sizeritem") || name == wxT("gbsizeritem") || name == wxT("sizeritembase"))
+						m_pg->SetPropertyBackgroundColour(id,wxColour(51,127,127)); // dark cyan
+				}
 			}
 
 			ExpandMap::iterator it = m_isExpanded.find( propName );
@@ -600,12 +617,24 @@ void ObjectInspector::AddItems( const wxString& name, PObjectBase obj,
 			if (m_style != wxFB_OI_MULTIPAGE_STYLE)
 			{
 				// Most common classes will be showed with a slightly different colour.
-				if (name == wxT("wxWindow"))
-					m_eg->SetPropertyBackgroundColour( id, wxColour( 255, 255, 205 ) ); // Yellow
-				else if (name == wxT("AUI Events"))
-					m_eg->SetPropertyBackgroundColour( id, wxColour(240,240,255) ); // light blue
-				else if (name == wxT("sizeritem") || name == wxT("gbsizeritem") || name == wxT("sizeritembase") )
-					m_eg->SetPropertyBackgroundColour( id, wxColour( 220, 255, 255 ) ); // Cyan
+				if (!AppData()->IsDarkMode())
+				{
+					if (name == wxT("wxWindow"))
+						m_pg->SetPropertyBackgroundColour(id,wxColour(255,255,205)); // yellow
+					else if (name == wxT("AUI"))
+						m_pg->SetPropertyBackgroundColour(id,wxColour(240,240,255)); // light blue
+					else if (name == wxT("sizeritem") || name == wxT("gbsizeritem") || name == wxT("sizeritembase"))
+						m_pg->SetPropertyBackgroundColour(id,wxColour(220,255,255)); // cyan
+				}
+				else
+				{
+					if (name == wxT("wxWindow"))
+						m_pg->SetPropertyBackgroundColour(id,wxColour(127,127,51)); // dark yellow
+					else if (name == wxT("AUI"))
+						m_pg->SetPropertyBackgroundColour(id,wxColour(76,76,153)); // dark blue
+					else if (name == wxT("sizeritem") || name == wxT("gbsizeritem") || name == wxT("sizeritembase"))
+						m_pg->SetPropertyBackgroundColour(id,wxColour(51,127,127)); // dark cyan
+				}
 			}
 
 			ExpandMap::iterator it = m_isExpanded.find(eventName);
@@ -700,6 +729,14 @@ void ObjectInspector::OnPropertyGridChanged( wxPropertyGridEvent& event )
 				break;
 			}
 			case PT_TEXT:
+			{
+				// The used wxPropertyGrid component does (undocumented?) escape certain control characters,
+				// especially \n, which is not desired for this type, its value should be preserved as is.
+				// TypeConv::TextToString() reverses exactly the same escape sequences.
+				auto rawValue = TypeConv::TextToString(m_pg->GetPropertyValueAsString(propPtr));
+				ModifyProperty(prop, rawValue);
+				break;
+			}
 			case PT_MACRO:
 			case PT_INT:
 			case PT_UINT:
@@ -817,9 +854,11 @@ void ObjectInspector::OnPropertyGridChanged( wxPropertyGridEvent& event )
 			}
 			case PT_INTLIST:
 			case PT_UINTLIST:
+			case PT_INTPAIRLIST:
+			case PT_UINTPAIRLIST:
 			{
-				IntList il( event.GetPropertyValue(), PT_UINTLIST == prop->GetType() );
-				ModifyProperty( prop, il.ToString() );
+				IntList il(event.GetPropertyValue(), PT_UINTLIST == prop->GetType(), (PT_INTPAIRLIST == prop->GetType() || PT_UINTPAIRLIST == prop->GetType()));
+				ModifyProperty(prop, il.ToString(true));
 				break;
 			}
 			case PT_BITMAP:
@@ -973,7 +1012,7 @@ void ObjectInspector::OnPropertyModified( wxFBPropertyEvent& event )
 		break;
 	}
 	case PT_TEXT:
-		pgProp->SetValueFromString(prop->GetValueAsString(), 0);
+		pgProp->SetValueFromString(prop->GetValueAsText(), 0);
 		break;
 	case PT_MACRO:
 	case PT_OPTION:
