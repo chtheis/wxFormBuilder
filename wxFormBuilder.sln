@@ -31,7 +31,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "wxFormBuilder", "src\wxForm
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "wxfb-plugin-interface", "sdk\plugin_interface\wxfb-plugin-interface.vcxproj", "{7E01AC65-D346-3CFB-B6EB-62BFFB290FB1}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ticpp", "subprojects\ticpp\ticpp.vcxproj", "{F4C66AAE-0480-334C-AF3C-90E6C19FFFE9}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ticpp", "subprojects\ticpp.vcxproj", "{F4C66AAE-0480-334C-AF3C-90E6C19FFFE9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
