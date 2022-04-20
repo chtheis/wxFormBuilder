@@ -44,3 +44,4 @@ install/windows/*.exe
 /_install/
 /compile_commands.json
 /lib/
+/sdk/plugin_interface/wxfb-plugin-interface.dir/
