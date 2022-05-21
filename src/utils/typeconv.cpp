@@ -932,9 +932,13 @@ wxArrayString TypeConv::StringToArrayString( const wxString& str )
 
 wxString TypeConv::ArrayStringToString(const wxArrayString &arrayStr)
 {
-	wxString result;
+  wxString result;
 
-	wxArrayStringProperty::ArrayStringToString( result, arrayStr, '"', 1 );
+#if wxCHECK_VERSION(3, 1, 6)
+  result = wxArrayStringProperty::ArrayStringToString(arrayStr, '"', 1);
+#else
+  wxArrayStringProperty::ArrayStringToString(result, arrayStr, '"', 1);
+#endif
 
 	return result;
 }
