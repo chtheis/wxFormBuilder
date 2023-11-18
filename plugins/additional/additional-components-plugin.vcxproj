@@ -80,7 +80,7 @@
       <AdditionalIncludeDirectories>../../sdk/tinyxml;../../sdk/plugin_interface;$(WXWIN)/include;$(WXWIN)/lib/vc_dll/mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>../../sdk/lib/wxfb-plugin-interface.lib;../../lib/ticpp.lib;wxbase31u.lib;wxmsw31u_core.lib;wxmsw31u_adv.lib;wxmsw31u_stc.lib;wxmsw31u_propgrid.lib;wxmsw31u_richtext.lib;wxmsw31u_html.lib;wxmsw31u_ribbon.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>../../sdk/lib/wxfb-plugin-interface.lib;../../lib/ticpp.lib;wxbase32u.lib;wxmsw32u_core.lib;wxmsw32u_adv.lib;wxmsw32u_stc.lib;wxmsw32u_propgrid.lib;wxmsw32u_richtext.lib;wxmsw32u_html.lib;wxmsw32u_ribbon.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)libadditional.dll</OutputFile>
       <AdditionalLibraryDirectories>../..;$(WXWIN)/lib/vc_dll;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -111,7 +111,7 @@
       <AdditionalIncludeDirectories>../../sdk/tinyxml;../../sdk/plugin_interface;$(WXWIN)/include;$(WXWIN)/lib/vc_dll/mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>../../sdk/lib/wxfb-plugin-interface.lib;../../lib/ticpp.lib;wxbase31u.lib;wxmsw31u_core.lib;wxmsw31u_adv.lib;wxmsw31u_stc.lib;wxmsw31u_propgrid.lib;wxmsw31u_richtext.lib;wxmsw31u_html.lib;wxmsw31u_ribbon.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>../../sdk/lib/wxfb-plugin-interface.lib;../../lib/ticpp.lib;wxbase32u.lib;wxmsw32u_core.lib;wxmsw32u_adv.lib;wxmsw32u_stc.lib;wxmsw32u_propgrid.lib;wxmsw32u_richtext.lib;wxmsw32u_html.lib;wxmsw32u_ribbon.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)libadditional.dll</OutputFile>
       <AdditionalLibraryDirectories>../..;$(WXWIN)/lib/vc_dll;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -143,7 +143,7 @@
       <AdditionalIncludeDirectories>../../sdk/tinyxml;../../sdk/plugin_interface;$(WXWIN)/include;$(WXWIN)/lib/vc_dll/mswud;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>../../sdk/lib/wxfb-plugin-interfaced.lib;../../lib/ticppd.lib;wxbase31ud.lib;wxmsw31ud_core.lib;wxmsw31ud_adv.lib;wxmsw31ud_stc.lib;wxmsw31ud_propgrid.lib;wxmsw31ud_richtext.lib;wxmsw31ud_html.lib;wxmsw31ud_ribbon.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>../../sdk/lib/wxfb-plugin-interfaced.lib;../../lib/ticppd.lib;wxbase32ud.lib;wxmsw32ud_core.lib;wxmsw32ud_adv.lib;wxmsw32ud_stc.lib;wxmsw32ud_propgrid.lib;wxmsw32ud_richtext.lib;wxmsw32ud_html.lib;wxmsw32ud_ribbon.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)libadditionald.dll</OutputFile>
       <AdditionalLibraryDirectories>../..;$(WXWIN)/lib/vc_dll;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>

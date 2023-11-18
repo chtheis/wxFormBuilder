@@ -80,7 +80,7 @@
       <AdditionalIncludeDirectories>../../sdk/tinyxml;../../sdk/plugin_interface;$(WXWIN)/include;$(WXWIN)/lib/vc_dll/mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>../../sdk/lib/wxfb-plugin-interface.lib;../../lib/ticpp.lib;wxbase31u.lib;wxmsw31u_core.lib;wxmsw31u_adv.lib;wxmsw31u_aui.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>../../sdk/lib/wxfb-plugin-interface.lib;../../lib/ticpp.lib;wxbase32u.lib;wxmsw32u_core.lib;wxmsw32u_adv.lib;wxmsw32u_aui.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)libcontainers.dll</OutputFile>
       <AdditionalLibraryDirectories>../..;$(WXWIN)/lib/vc_dll;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -110,7 +110,7 @@
       <AdditionalIncludeDirectories>../../sdk/tinyxml;../../sdk/plugin_interface;$(WXWIN)/include;$(WXWIN)/lib/vc_dll/mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>../../sdk/lib/wxfb-plugin-interface.lib;../../lib/ticpp.lib;wxbase31u.lib;wxmsw31u_core.lib;wxmsw31u_adv.lib;wxmsw31u_aui.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>../../sdk/lib/wxfb-plugin-interface.lib;../../lib/ticpp.lib;wxbase32u.lib;wxmsw32u_core.lib;wxmsw32u_adv.lib;wxmsw32u_aui.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)libcontainers.dll</OutputFile>
       <AdditionalLibraryDirectories>../..;$(WXWIN)/lib/vc_dll;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -141,7 +141,7 @@
       <AdditionalIncludeDirectories>../../sdk/tinyxml;../../sdk/plugin_interface;$(WXWIN)/include;$(WXWIN)/lib/vc_dll/mswud;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>../../sdk/lib/wxfb-plugin-interfaced.lib;../../lib/ticppd.lib;wxbase31ud.lib;wxmsw31ud_core.lib;wxmsw31ud_adv.lib;wxmsw31ud_aui.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>../../sdk/lib/wxfb-plugin-interfaced.lib;../../lib/ticppd.lib;wxbase32ud.lib;wxmsw32ud_core.lib;wxmsw32ud_adv.lib;wxmsw32ud_aui.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)libcontainersd.dll</OutputFile>
       <AdditionalLibraryDirectories>../..;$(WXWIN)/lib/vc_dll;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>

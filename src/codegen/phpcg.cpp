@@ -155,7 +155,7 @@ wxString PHPTemplateParser::ValueToCode( PropertyType type, wxString value )
 		}
 	case PT_BITLIST:
 		{
-			result = ( value.empty() ? wxT("0") : value );
+			result = ( value.empty() ? wxString("0") : value );
 			break;
 		}
 	case PT_WXPOINT:

@@ -171,7 +171,7 @@ wxString PythonTemplateParser::ValueToCode( PropertyType type, wxString value )
 		}
 	case PT_BITLIST:
 		{
-			result = ( value.empty() ? wxT("0") : value );
+			result = ( value.empty() ? wxString("0") : value );
 
 			wxString pred, bit;
 			wxStringTokenizer bits( result, wxT("|"), wxTOKEN_STRTOK );
