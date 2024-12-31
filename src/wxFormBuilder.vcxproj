@@ -82,7 +82,7 @@
       <AdditionalIncludeDirectories>controls/include;boost;../src;../sdk/tinyxml;../sdk/plugin_interface;$(WXWIN)/include;$(WXWIN)/lib/vc_dll/mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>../lib/ticpp.lib;../sdk/lib/wxfb-plugin-interface.lib;wxbase32u.lib;wxbase32u_net.lib;wxmsw32u_core.lib;wxmsw32u_adv.lib;wxmsw32u_aui.lib;wxmsw32u_html.lib;wxmsw32u_stc.lib;wxmsw32u_propgrid.lib;wxmsw32u_xrc.lib;imagehlp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>../subprojects/lib/ticpp.lib;../sdk/lib/wxfb-plugin-interface.lib;wxbase32u.lib;wxbase32u_net.lib;wxmsw32u_core.lib;wxmsw32u_adv.lib;wxmsw32u_aui.lib;wxmsw32u_html.lib;wxmsw32u_stc.lib;wxmsw32u_propgrid.lib;wxmsw32u_xrc.lib;imagehlp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)wxFormBuilder.exe</OutputFile>
       <AdditionalLibraryDirectories>..;../output;$(WXWIN)/lib/vc_dll;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -113,7 +113,7 @@
       <AdditionalIncludeDirectories>controls/include;boost;../src;../sdk/tinyxml;../sdk/plugin_interface;$(WXWIN)/include;$(WXWIN)/lib/vc_dll/mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>../lib/ticpp.lib;../sdk/lib/wxfb-plugin-interface.lib;wxbase32u.lib;wxmsw32u_core.lib;wxbase32u_net.lib;wxmsw32u_adv.lib;wxmsw32u_aui.lib;wxmsw32u_html.lib;wxmsw32u_stc.lib;wxmsw32u_propgrid.lib;wxmsw32u_xrc.lib;imagehlp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>../subprojects/lib/ticpp.lib;../sdk/lib/wxfb-plugin-interface.lib;wxbase32u.lib;wxmsw32u_core.lib;wxbase32u_net.lib;wxmsw32u_adv.lib;wxmsw32u_aui.lib;wxmsw32u_html.lib;wxmsw32u_stc.lib;wxmsw32u_propgrid.lib;wxmsw32u_xrc.lib;imagehlp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)wxFormBuilder.exe</OutputFile>
       <AdditionalLibraryDirectories>..;../output;../sdk/lib;$(WXWIN)/lib/vc_dll;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -146,7 +146,7 @@
       <AdditionalIncludeDirectories>controls/include;boost;../src;../sdk/tinyxml;../sdk/plugin_interface;$(WXWIN)/include;$(WXWIN)/lib/vc_dll/mswud;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>../lib/ticppd.lib;../sdk/lib/wxfb-plugin-interfaced.lib;wxbase32ud.lib;wxbase32ud_net.lib;wxmsw32ud_core.lib;wxmsw32ud_adv.lib;wxmsw32ud_aui.lib;wxmsw32ud_html.lib;wxmsw32ud_stc.lib;wxmsw32ud_propgrid.lib;wxmsw32ud_xrc.lib;imagehlp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>../subprojects/lib/ticppd.lib;../sdk/lib/wxfb-plugin-interfaced.lib;wxbase32ud.lib;wxbase32ud_net.lib;wxmsw32ud_core.lib;wxmsw32ud_adv.lib;wxmsw32ud_aui.lib;wxmsw32ud_html.lib;wxmsw32ud_stc.lib;wxmsw32ud_propgrid.lib;wxmsw32ud_xrc.lib;imagehlp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)wxFormBuilderd.exe</OutputFile>
       <AdditionalLibraryDirectories>..;../output;../sdk/lib;$(WXWIN)/lib/vc_dll;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
